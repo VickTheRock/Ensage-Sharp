@@ -6,8 +6,6 @@ using SharpDX.Direct3D9;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-
 namespace AbilityMapHack
 {
     public static class AbilityMapHack
@@ -84,11 +82,11 @@ namespace AbilityMapHack
         {
             try
             {
-                vector = args.ParticleEffect.GetControlPoint(0);
                 if (hero.Name.Contains("npc_dota_hero_") && Menu.Item("enable").GetValue<bool>())
                 {
-                    Task.Delay(50).ContinueWith(_ =>
+                    DelayAction.Add(50, () =>
                     {
+                       vector = args.ParticleEffect.GetControlPoint(0);
                         List<Vector2> Position = new List<Vector2>();
 
                         if (!args.ParticleEffect.Owner.IsVisible)
@@ -96,7 +94,7 @@ namespace AbilityMapHack
                             heroName = args.ParticleEffect.Owner.Name;
                             Hero MyHero = ObjectManager.LocalHero;
 
-                            particleName = args.Name;
+                             particleName = args.Name;
                             //Console.WriteLine("eff4" + eff4);
                             string partHero = particleName.Substring(particleName.LastIndexOf(@"/") + 1).Replace(".vpcf", "");
 
@@ -106,7 +104,7 @@ namespace AbilityMapHack
                                 if (spell == partHero)
                                 {
                                     Position.Add(HUDInfo.WorldToMinimap(vector));
-                                    Task.Delay(2500).ContinueWith(_z =>
+                                    DelayAction.Add(2500, () =>
                                     {
                                         Position.RemoveAt(0);
                                     });
@@ -132,12 +130,11 @@ namespace AbilityMapHack
 
                                     if (!vector.IsZero)
                                     {
-                                        ParticleEffect range = new ParticleEffect(@"materials\ensage_ui\particles\range_display_mod.vpcf", vector);
+										ParticleEffect range = new ParticleEffect(@"materials\ensage_ui\particles\range_display_mod.vpcf", vector);
                                         //ParticleEffect range = new ParticleEffect(particleName, vector);
                                         range.SetControlPoint(1, new Vector3(500, 255, 0));
                                         range.SetControlPoint(2, new Vector3(255, 0, 0));
-
-                                        Task.Delay(2500).ContinueWith(_x =>
+                                        DelayAction.Add(2500, () =>
                                         {
                                             if (range != null)
                                             {
@@ -153,17 +150,18 @@ namespace AbilityMapHack
                 }
                 if (hero.Name.Contains("npc_dota_neutral"))
                 {
-                    Task.Delay(50).ContinueWith(_q =>
+                    DelayAction.Add(50, () =>
                     {
+                        var GetControlPoint = args.ParticleEffect.GetControlPoint(0);
                         List<Vector2> Position = new List<Vector2>();
 
                         if (!args.ParticleEffect.Owner.IsVisible)
                         {
                             //if(!GetControlPoint.IsZero)
                             //{
-                            Position.Add(HUDInfo.WorldToMinimap(vector));
+                            Position.Add(HUDInfo.WorldToMinimap(GetControlPoint));
                             //}
-                            Task.Delay(1000).ContinueWith(_x =>
+                            DelayAction.Add(1000, () =>
                             {
                                 Position.RemoveAt(0);
                             });
@@ -171,7 +169,7 @@ namespace AbilityMapHack
                             Drawing.OnEndScene += argst =>
                             {
                                 if (Drawing.Direct3DDevice9 == null) return;
-                                foreach (var pos in Position.ToList())
+                                foreach (var pos in Position?.ToList())
                                 {
                                     if (!pos.IsZero)
                                     {
@@ -180,12 +178,12 @@ namespace AbilityMapHack
                                     }
                                 }
                             };
-                            if (!vector.IsZero)
+                            if (!GetControlPoint.IsZero)
                             {
-                                ParticleEffect range = new ParticleEffect(@"materials\ensage_ui\particles\range_display_mod.vpcf", vector);
+                                ParticleEffect range = new ParticleEffect(@"materials\ensage_ui\particles\range_display_mod.vpcf", GetControlPoint);
                                 range.SetControlPoint(1, new Vector3(450, 255, 255));
                                 range.SetControlPoint(2, new Vector3(255, 0, 0));
-                                Task.Delay(700).ContinueWith(_x =>
+                                DelayAction.Add(500, () =>
                                 {
                                     if (range != null)
                                     {
