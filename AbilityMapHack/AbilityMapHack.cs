@@ -6,6 +6,7 @@ using SharpDX.Direct3D9;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 namespace AbilityMapHack
 {
     public static class AbilityMapHack
@@ -82,7 +83,7 @@ namespace AbilityMapHack
         {
             if (hero.Name.Contains("npc_dota_hero_") || hero.Name.Contains("npc_dota_neutral"))
             {
-                DelayAction.Add(50, () =>
+                Task.Delay(50).ContinueWith(_1 => 
                 {
                     vector = args.ParticleEffect.GetControlPoint(0);
                     List<Vector2> Position = new List<Vector2>();
@@ -104,7 +105,7 @@ namespace AbilityMapHack
                             if (spell == partHero)
                             {
                                 Position.Add(HUDInfo.WorldToMinimap(vector));
-                                DelayAction.Add(2500, () =>
+                                Task.Delay(2500).ContinueWith(_2 =>
                                 {
                                     Position.RemoveAt(0);
                                 });
@@ -137,7 +138,7 @@ namespace AbilityMapHack
                                         //ParticleEffect range = new ParticleEffect(particleName, vector);
                                         range.SetControlPoint(1, new Vector3(500, 255, 0));
                                         range.SetControlPoint(2, new Vector3(255, 0, 0));
-                                        DelayAction.Add(2500, () =>
+                                        Task.Delay(2500).ContinueWith(_3 =>
                                         {
                                             if (range != null)
                                             {
@@ -152,7 +153,7 @@ namespace AbilityMapHack
                                         //ParticleEffect range = new ParticleEffect(particleName, vector);
                                         range.SetControlPoint(1, new Vector3(500, 255, 0));
                                         range.SetControlPoint(2, new Vector3(255, 0, 0));
-                                        DelayAction.Add(2500, () =>
+                                        Task.Delay(2500).ContinueWith(_4 =>
                                         {
                                             if (range != null)
                                             {
@@ -176,8 +177,8 @@ namespace AbilityMapHack
                 {"queen_blink_start"},
                 {"bounty_hunter_windwalk"},
                 {"antimage_blink_start"},
-                {"invoker_ice_wall"},
-                {"invoker_emp"},
+                //{"invoker_ice_wall"},
+                //{"invoker_emp"},
                 {"invoker_quas_orb"},
                 {"invoker_wex_orb"},
                 {"invoker_exort_orb"},
