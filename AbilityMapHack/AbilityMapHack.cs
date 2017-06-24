@@ -1,4 +1,4 @@
-﻿using Ensage;
+using Ensage;
 using Ensage.Common;
 using Ensage.Common.Menu;
 using SharpDX;
@@ -84,11 +84,11 @@ namespace AbilityMapHack
         {
             try
             {
+                vector = args.ParticleEffect.GetControlPoint(0);
                 if (hero.Name.Contains("npc_dota_hero_") && Menu.Item("enable").GetValue<bool>())
                 {
                     Task.Delay(50).ContinueWith(_ =>
                     {
-                        vector = args.ParticleEffect.GetControlPoint(0);
                         List<Vector2> Position = new List<Vector2>();
 
                         if (!args.ParticleEffect.Owner.IsVisible)
@@ -155,14 +155,13 @@ namespace AbilityMapHack
                 {
                     Task.Delay(50).ContinueWith(_q =>
                     {
-                        var GetControlPoint = args.ParticleEffect.GetControlPoint(0);
                         List<Vector2> Position = new List<Vector2>();
 
                         if (!args.ParticleEffect.Owner.IsVisible)
                         {
                             //if(!GetControlPoint.IsZero)
                             //{
-                            Position.Add(HUDInfo.WorldToMinimap(GetControlPoint));
+                            Position.Add(HUDInfo.WorldToMinimap(vector));
                             //}
                             Task.Delay(1000).ContinueWith(_x =>
                             {
@@ -172,7 +171,7 @@ namespace AbilityMapHack
                             Drawing.OnEndScene += argst =>
                             {
                                 if (Drawing.Direct3DDevice9 == null) return;
-                                foreach (var pos in Position?.ToList())
+                                foreach (var pos in Position.ToList())
                                 {
                                     if (!pos.IsZero)
                                     {
@@ -181,9 +180,9 @@ namespace AbilityMapHack
                                     }
                                 }
                             };
-                            if (!GetControlPoint.IsZero)
+                            if (!vector.IsZero)
                             {
-                                ParticleEffect range = new ParticleEffect(@"materials\ensage_ui\particles\range_display_mod.vpcf", GetControlPoint);
+                                ParticleEffect range = new ParticleEffect(@"materials\ensage_ui\particles\range_display_mod.vpcf", vector);
                                 range.SetControlPoint(1, new Vector3(450, 255, 255));
                                 range.SetControlPoint(2, new Vector3(255, 0, 0));
                                 Task.Delay(700).ContinueWith(_x =>
