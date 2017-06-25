@@ -86,6 +86,10 @@ namespace AbilityMapHack
                 Task.Delay(50).ContinueWith(_1 => 
                 {
                     vector = args.ParticleEffect.GetControlPoint(0);
+                    //args.ParticleEffect.GetControlPoint(0);
+                    Console.WriteLine("0 " + args.ParticleEffect.GetControlPoint(0));
+                    Console.WriteLine("1 " + args.ParticleEffect.GetControlPointParent(0));
+
                     List<Vector2> Position = new List<Vector2>();
 
                     if (!args.ParticleEffect.Owner.IsVisible)
@@ -97,41 +101,43 @@ namespace AbilityMapHack
                         }
 
                         particleName = args.Name;
-                        //Console.WriteLine("eff4" + eff4);
+                        //Console.WriteLine("particleName" + particleName);
                         string partHero = particleName.Substring(particleName.LastIndexOf(@"/") + 1).Replace(".vpcf", "");
-
+                        Position.Add(HUDInfo.WorldToMinimap(vector));
+                        Task.Delay(2000).ContinueWith(_2 =>
+                        {
+                            if (Position != null)
+                                Position.RemoveAt(0);
+                        });
                         foreach (var spell in TextureList)
                         {
-                            if (spell == partHero)
-                            {
-                                Position.Add(HUDInfo.WorldToMinimap(vector));
-                                Task.Delay(2500).ContinueWith(_2 =>
-                                {
-                                    Position.RemoveAt(0);
-                                });
-                                Drawing.OnEndScene += argst =>
-                                {
-                                    if (Drawing.Direct3DDevice9 == null) return;
-                                    foreach (var pos in Position.ToList())
-                                    {
-                                        if (!pos.IsZero)
-                                        {
-                                            if (partHero != "generic_hit_blood")
-                                            {
-                                                Font.DrawText(null, HeroName, (int)pos.X - 17 + 2, (int)pos.Y - 16 + 2, Color.Gold);
-                                                Font.DrawText(null, "♉", (int)pos.X - 7 + 2, (int)pos.Y - 8, Color.Red);
-                                            }
-                                            else if (partHero == "generic_hit_blood" && hero.Name.Contains("npc_dota_neutral"))
-                                            {
-                                                Font.DrawText(null, HeroName, (int)pos.X - 17 + 2, (int)pos.Y - 16 + 2, Color.Gold);
-                                                Font.DrawText(null, "♉", (int)pos.X - 7 + 2, (int)pos.Y - 8, Color.Red);
-                                            }
-                                        }
-                                    }
-                                };
+                        if (partHero == spell)
+                        {
+                       
+                        Drawing.OnEndScene += argst =>
+                         {
+                         if (Drawing.Direct3DDevice9 == null) return;
+                             foreach (var pos in Position.ToList())
+                             {
+                                 if (!pos.IsZero)
+                                 {
+                                     if (partHero != "generic_hit_blood")
+                                     {
+                                         Font.DrawText(null, HeroName, (int)pos.X - 17 + 2, (int)pos.Y - 16 + 2, Color.Gold);
+                                         Font.DrawText(null, "♉", (int)pos.X - 7 + 2, (int)pos.Y - 8, Color.Red);
+                                     }
+                                     else if (partHero == "generic_hit_blood" && hero.Name.Contains("npc_dota_neutral"))
+                                     {
+                                         Font.DrawText(null, HeroName, (int)pos.X - 17 + 2, (int)pos.Y - 16 + 2, Color.Gold);
+                                         Font.DrawText(null, "♉", (int)pos.X - 7 + 2, (int)pos.Y - 8, Color.Red);
+                                     }
+                                 }
+                             }
+                         };
 
-                                if (!vector.IsZero)
+                        if (!vector.IsZero)
                                 {
+                                   
                                     if (partHero != "generic_hit_blood")
                                     {
                                         ParticleEffect range = new ParticleEffect(@"materials\ensage_ui\particles\range_display_mod.vpcf", vector);
@@ -164,7 +170,7 @@ namespace AbilityMapHack
                                     }
                                 }
                             }
-                        }
+                       }
                     }
                 });
             }
@@ -172,6 +178,9 @@ namespace AbilityMapHack
 
         private static List<string> TextureList = new List<string>()
         {
+                {"shredder_timber_chain_tree"},
+                {"shredder_whirling_death"},
+				{"death_prophet_silence_cast"},
                 {"generic_hit_blood"},
                 {"blink_dagger_start"},
                 {"queen_blink_start"},
