@@ -12,8 +12,7 @@ namespace AbilityMapHack
     public static class AbilityMapHack
     {
         private static Font Font;
-        private static string heroName, particleName, HeroName;
-        private static Vector3 vector;
+        private static string heroName;
         private static readonly Menu Menu = new Menu("Ability MapHack", "Ability MapHack", true, "Ability MapHack", true).SetFontColor(Color.DarkRed);
         private static ParticleEffect range;
         static void Main()
@@ -83,27 +82,19 @@ namespace AbilityMapHack
         {
             if (hero.Name.Contains("npc_dota_hero_") || hero.Name.Contains("npc_dota_neutral"))
             {
-                Task.Delay(50).ContinueWith(_1 => 
+                if (!args.ParticleEffect.Owner.IsVisible)
                 {
-                    vector = args.ParticleEffect.GetControlPoint(0);
-                    //args.ParticleEffect.GetControlPoint(0);
-                    //Console.WriteLine("0 " + args.ParticleEffect.GetControlPoint(0));
-                    //Console.WriteLine("1 " + args.ParticleEffect.GetControlPointParent(0));
-
-                    List<Vector2> Position = new List<Vector2>();
-
-                    if (!args.ParticleEffect.Owner.IsVisible)
+                    if (hero.Name.Contains("npc_dota_hero_"))
+                    heroName = args.ParticleEffect.Owner.Name;
+                    string particleName = args.Name;
+                    Task.Delay(50).ContinueWith(_1 =>
                     {
-                        if (hero.Name.Contains("npc_dota_hero_"))
-                        {
-                            heroName = args.ParticleEffect.Owner.Name;
-                            HeroName = FirstUpper(GetHeroName(heroName)).Replace("_", "");
-                        }
-
-                        particleName = args.Name;
-                        //Console.WriteLine("particleName" + particleName);
+                        Vector3 vector = args.ParticleEffect.GetControlPoint(0);
                         string partHero = particleName.Substring(particleName.LastIndexOf(@"/") + 1).Replace(".vpcf", "");
+
+                        List<Vector2> Position = new List<Vector2>();
                         Position.Add(HUDInfo.WorldToMinimap(vector));
+
                         Task.Delay(2000).ContinueWith(_2 =>
                         {
                             if (Position != null)
@@ -120,8 +111,9 @@ namespace AbilityMapHack
                              foreach (var pos in Position?.ToList())
                              {
                                  if (!pos.IsZero)
-                                 {
-                                     if (partHero != "generic_hit_blood")
+                                {
+                                    string HeroName = FirstUpper(GetHeroName(heroName)).Replace("_", "");
+                                    if (partHero != "generic_hit_blood")
                                      {
                                          Font.DrawText(null, HeroName, (int)pos.X - 17 + 2, (int)pos.Y - 16 + 2, Color.Gold);
                                          Font.DrawText(null, "♉", (int)pos.X - 7 + 2, (int)pos.Y - 8, Color.Red);
@@ -171,20 +163,20 @@ namespace AbilityMapHack
                                 }
                             }
                        }
-                    }
                 });
+                }
             }
         }
 
         private static List<string> TextureList = new List<string>()
         {
 
-                //{"broodmother_spin_web_cast"},
-                //{"broodmother_huger_buff"},
-                //{"batrider_firefly_ember"},
-                //{"shredder_timber_chain_tree"},
-                //{"shredder_whirling_death"},
-				//{"death_prophet_silence_cast"},
+                {"broodmother_spin_web_cast"},
+                {"broodmother_huger_buff"},
+                {"batrider_firefly_ember"},
+                {"shredder_timber_chain_tree"},
+                {"shredder_whirling_death"},
+				{"death_prophet_silence_cast"},
                 {"generic_hit_blood"},
                 {"blink_dagger_start"},
                 {"queen_blink_start"},
