@@ -87,8 +87,8 @@ namespace AbilityMapHack
                 {
                     vector = args.ParticleEffect.GetControlPoint(0);
                     //args.ParticleEffect.GetControlPoint(0);
-                    Console.WriteLine("0 " + args.ParticleEffect.GetControlPoint(0));
-                    Console.WriteLine("1 " + args.ParticleEffect.GetControlPointParent(0));
+                    //Console.WriteLine("0 " + args.ParticleEffect.GetControlPoint(0));
+                    //Console.WriteLine("1 " + args.ParticleEffect.GetControlPointParent(0));
 
                     List<Vector2> Position = new List<Vector2>();
 
@@ -111,13 +111,13 @@ namespace AbilityMapHack
                         });
                         foreach (var spell in TextureList)
                         {
-                        if (partHero == spell)
+                        if (partHero == spell && heroName != null)
                         {
                        
                         Drawing.OnEndScene += argst =>
-                         {
+                        {
                          if (Drawing.Direct3DDevice9 == null) return;
-                             foreach (var pos in Position.ToList())
+                             foreach (var pos in Position?.ToList())
                              {
                                  if (!pos.IsZero)
                                  {
@@ -134,7 +134,7 @@ namespace AbilityMapHack
                                  }
                              }
                          };
-
+                         
                         if (!vector.IsZero)
                                 {
                                    
@@ -178,14 +178,21 @@ namespace AbilityMapHack
 
         private static List<string> TextureList = new List<string>()
         {
-                {"shredder_timber_chain_tree"},
-                {"shredder_whirling_death"},
-				{"death_prophet_silence_cast"},
+
+                //{"broodmother_spin_web_cast"},
+                //{"broodmother_huger_buff"},
+                //{"batrider_firefly_ember"},
+                //{"shredder_timber_chain_tree"},
+                //{"shredder_whirling_death"},
+				//{"death_prophet_silence_cast"},
                 {"generic_hit_blood"},
                 {"blink_dagger_start"},
                 {"queen_blink_start"},
+                {"blink_dagger_end"},
+                {"queen_blink_end"},
                 {"bounty_hunter_windwalk"},
-                {"antimage_blink_start"},
+                //{"antimage_blink_end"},
+                //{"antimage_blink_start"},
                 //{"invoker_ice_wall"},
                 //{"invoker_emp"},
                 {"invoker_quas_orb"},
