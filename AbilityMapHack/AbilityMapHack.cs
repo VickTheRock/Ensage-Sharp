@@ -81,101 +81,122 @@ namespace AbilityMapHack
         private static void OnParticleEvent(Entity hero, ParticleEffectAddedEventArgs args)
         {
             if (hero.Name.Contains("npc_dota_hero_") || hero.Name.Contains("npc_dota_neutral"))
-                {
+            {
                 if (!args.ParticleEffect.Owner.IsVisible)
                 {
                     if (hero.Name.Contains("npc_dota_hero_"))
-                    heroName = args.ParticleEffect.Owner.Name;
+                        heroName = args.ParticleEffect.Owner.Name;
 
                     string particleName = args.Name;
-                    Task.Delay(50).ContinueWith(_1 =>
-                    {
-                        Vector3 vector = args.ParticleEffect.GetControlPoint(0);
-                        if(particleName == null || vector.IsZero) return;
-                        string partHero = particleName.Substring(particleName.LastIndexOf(@"/") + 1).Replace(".vpcf", "");
-                        Console.WriteLine("partHero " + partHero);
-                        //Console.WriteLine("vector " + vector);
-                        List<Vector2> Position = new List<Vector2>();
-                        Vector2  positionToMinimap = HUDInfo.WorldToMinimap(vector);
-                        Position.Add(positionToMinimap);
+                    Task.Delay(50)
+                        .ContinueWith(_1 =>
+                        {
+                            Vector3 vector = args.ParticleEffect.GetControlPoint(0);
+                            if (particleName == null || vector.IsZero) return;
+                            string partHero = particleName.Substring(particleName.LastIndexOf(@"/") + 1)
+                                .Replace(".vpcf", "");
+                            Console.WriteLine("partHero " + partHero);
+                            //Console.WriteLine("vector " + vector);
+                            List<Vector2> Position = new List<Vector2>();
+                            Vector2 positionToMinimap = HUDInfo.WorldToMinimap(vector);
+                            Position.Add(positionToMinimap);
 
-                        Task.Delay(2000).ContinueWith(_2 =>
-                        {
-                                Position.RemoveAt(0);
-                        });
-                        if (heroName == null) return;
-                        foreach (var spell in TextureList)
-                        {
-                        if (spell == partHero)
-                        {
-
-                            string HeroName = FirstUpper(GetHeroName(heroName)).Replace("_", "");
-                                Drawing.OnEndScene += argst =>
-                        {
-                         if (Drawing.Direct3DDevice9 == null) return;
-                             foreach (var pos in Position.ToList())
-                             {
-                                 if (!pos.IsZero)
+                            Task.Delay(2000)
+                                .ContinueWith(_2 =>
                                 {
-                                    if (partHero != "generic_hit_blood")
-                                     {
-                                         Font.DrawText(null, HeroName, (int)pos.X - 17 + 2, (int)pos.Y - 16 + 2, Color.Gold);
-                                         Font.DrawText(null, "♉", (int)pos.X - 7 + 2, (int)pos.Y - 8, Color.Red);
-                                     }
-                                     else if ((partHero == "generic_hit_blood" || partHero == "disruptor_thunder_strike_bolt" || partHero == "emberspirit_flame_shield_aoe_impact") && hero.Name.Contains("npc_dota_neutral"))
-                                     {
-                                         if (partHero == "disruptor_thunder_strike_bolt")
-                                         {
-                                             HeroName = "Disruptor";
-                                         }
-                                         if (partHero == "emberspirit_flame_shield_aoe_impact")
-                                         {
-                                             HeroName = "Ember Spirit";
-                                         } 
-                                         Font.DrawText(null, HeroName, (int)pos.X - 17 + 2, (int)pos.Y - 16 + 2, Color.Gold);
-                                         Font.DrawText(null, "♉", (int)pos.X - 7 + 2, (int)pos.Y - 8, Color.Red);
-                                     }
-                                 }
-                             }
-                         };
-                         
-                        if (!vector.IsZero)
+                                    Position.RemoveAt(0);
+                                });
+                            if (heroName == null) return;
+                            Drawing.OnEndScene += argst =>
+                            {
+                                foreach (var spell in TextureList)
                                 {
-                                   
-                                    if (partHero != "generic_hit_blood")
+                                    if (spell == partHero)
                                     {
-                                        range = new ParticleEffect(@"materials\ensage_ui\particles\range_display_mod.vpcf", vector);
-                                        //ParticleEffect range = new ParticleEffect(particleName, vector);
-                                        range.SetControlPoint(1, new Vector3(500, 255, 0));
-                                        range.SetControlPoint(2, new Vector3(255, 0, 0));
-                                        Task.Delay(2500).ContinueWith(_3 =>
+
+                                        string HeroName = FirstUpper(GetHeroName(heroName)).Replace("_", "");
+
+                                        if (Drawing.Direct3DDevice9 == null) return;
+                                        foreach (var pos in Position.ToList())
                                         {
-                                            if (range != null)
+
+                                            if (!pos.IsZero)
                                             {
-                                                range.Dispose();
-                                                range = null;
+                                                if (partHero != "generic_hit_blood")
+                                                {
+                                                    Font.DrawText(null, HeroName, (int) pos.X - 17 + 2,
+                                                        (int) pos.Y - 16 + 2, Color.Gold);
+                                                    Font.DrawText(null, "♉", (int) pos.X - 7 + 2, (int) pos.Y - 8,
+                                                        Color.Red);
+                                                }
+                                                else if ((partHero == "generic_hit_blood" ||
+                                                          partHero == "disruptor_thunder_strike_bolt" ||
+                                                          partHero == "emberspirit_flame_shield_aoe_impact") &&
+                                                         hero.Name.Contains("npc_dota_neutral"))
+                                                {
+                                                    if (partHero == "disruptor_thunder_strike_bolt")
+                                                    {
+                                                        HeroName = "Disruptor";
+                                                    }
+                                                    if (partHero == "emberspirit_flame_shield_aoe_impact")
+                                                    {
+                                                        HeroName = "Ember Spirit";
+                                                    }
+                                                    Font.DrawText(null, HeroName, (int) pos.X - 17 + 2,
+                                                        (int) pos.Y - 16 + 2, Color.Gold);
+                                                    Font.DrawText(null, "♉", (int) pos.X - 7 + 2, (int) pos.Y - 8,
+                                                        Color.Red);
+                                                }
                                             }
-                                        });
+                                        }
                                     }
-                                    else if (partHero == "generic_hit_blood" && hero.Name.Contains("npc_dota_neutral"))
+                                    if (!vector.IsZero)
                                     {
-                                        range = new ParticleEffect(@"materials\ensage_ui\particles\range_display_mod.vpcf", vector);
-                                        //ParticleEffect range = new ParticleEffect(particleName, vector);
-                                        range.SetControlPoint(1, new Vector3(500, 255, 0));
-                                        range.SetControlPoint(2, new Vector3(255, 0, 0));
-                                        Task.Delay(2500).ContinueWith(_4 =>
+
+                                        if (partHero != "generic_hit_blood")
                                         {
-                                            if (range != null)
-                                            {
-                                                range.Dispose();
-                                                range = null;
-                                            }
-                                        });
+                                            range =
+                                                new ParticleEffect(
+                                                    @"materials\ensage_ui\particles\range_display_mod.vpcf",
+                                                    vector);
+                                            //ParticleEffect range = new ParticleEffect(particleName, vector);
+                                            range.SetControlPoint(1, new Vector3(500, 255, 0));
+                                            range.SetControlPoint(2, new Vector3(255, 0, 0));
+                                            Task.Delay(2500)
+                                                .ContinueWith(_3 =>
+                                                {
+                                                    if (range != null)
+                                                    {
+                                                        range.Dispose();
+                                                        range = null;
+                                                    }
+                                                });
+                                        }
+                                        else if (partHero == "generic_hit_blood" &&
+                                                 hero.Name.Contains("npc_dota_neutral"))
+                                        {
+                                            range =
+                                                new ParticleEffect(
+                                                    @"materials\ensage_ui\particles\range_display_mod.vpcf",
+                                                    vector);
+                                            //ParticleEffect range = new ParticleEffect(particleName, vector);
+                                            range.SetControlPoint(1, new Vector3(500, 255, 0));
+                                            range.SetControlPoint(2, new Vector3(255, 0, 0));
+                                            Task.Delay(2500)
+                                                .ContinueWith(_4 =>
+                                                {
+                                                    if (range != null)
+                                                    {
+                                                        range.Dispose();
+                                                        range = null;
+                                                    }
+                                                });
+                                        }
                                     }
                                 }
-                            }
-                       }
-                });
+
+                            };
+                        });
                 }
             }
         }
