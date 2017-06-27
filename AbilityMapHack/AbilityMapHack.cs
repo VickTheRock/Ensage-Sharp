@@ -108,7 +108,7 @@ namespace AbilityMapHack
                                 });
                             if (heroName == null) return;
                             Drawing.OnEndScene += argst =>
-                            {
+                            { if (Drawing.Direct3DDevice9 == null) return;
                                 foreach (var spell in TextureList)
                                 {
                                     if (spell == partHero)
@@ -116,7 +116,7 @@ namespace AbilityMapHack
 
                                         string HeroName = FirstUpper(GetHeroName(heroName)).Replace("_", "");
 
-                                        if (Drawing.Direct3DDevice9 == null) return;
+                                       
                                         foreach (var pos in Position.ToList())
                                         {
 
