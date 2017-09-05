@@ -158,7 +158,7 @@ namespace StormSpirit
                 Console.WriteLine("Menu exception at line: " + line);
             }
         }
-
+ 
         public static bool OnScreen(Vector3 v)
         {
             return Drawing.WorldToScreen(v) != Vector2.Zero;
