@@ -161,8 +161,7 @@ namespace StormSpirit
 
         public static bool OnScreen(Vector3 v)
         {
-            return !(Drawing.WorldToScreen(v).X < 0 || Drawing.WorldToScreen(v).X > Drawing.Width
-                     || Drawing.WorldToScreen(v).Y < 0 || Drawing.WorldToScreen(v).Y > Drawing.Height);
+            return Drawing.WorldToScreen(v) != Vector2.Zero;
         }
 
         public static Hero GetClosestToTarget(List<Hero> units, Hero z)
