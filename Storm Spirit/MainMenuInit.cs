@@ -75,6 +75,8 @@ namespace StormSpirit
                 {"storm_spirit_ball_lightning", true}
             })));
                 skills.AddItem(new MenuItem("AutoOverload", "Use Overload if target disable?").SetValue(false));
+
+                skills.AddItem(new MenuItem("savemanamode", "Use save mana mode.").SetValue(false));
                 items.AddItem(new MenuItem("Items", "Items:").SetValue(new AbilityToggler(new Dictionary<string, bool>
             {
 
@@ -161,8 +163,7 @@ namespace StormSpirit
 
         public static bool OnScreen(Vector3 v)
         {
-            return !(Drawing.WorldToScreen(v).X < 0 || Drawing.WorldToScreen(v).X > Drawing.Width
-                     || Drawing.WorldToScreen(v).Y < 0 || Drawing.WorldToScreen(v).Y > Drawing.Height);
+            return Drawing.WorldToScreen(v) != Vector2.Zero;
         }
 
         public static Hero GetClosestToTarget(List<Hero> units, Hero z)

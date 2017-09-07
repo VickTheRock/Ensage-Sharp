@@ -164,7 +164,7 @@
                         && me.Mana <= me.MaximumMana * 0.4
                     )
                         arcane.UseAbility();
-                   
+
                     uint elsecount = 0;
                     elsecount += 1;
                     if (elsecount == 1
@@ -271,7 +271,7 @@
                         {
                             var speed = ethereal.GetAbilityData("projectile_speed");
                             var time = e.Distance2D(me) / speed;
-                            Utils.Sleep((int)(time * 1000.0f + Game.Ping) + 30, "combosleep");
+                            Utils.Sleep((int) (time * 1000.0f + Game.Ping) + 30, "combosleep");
                             ethereal.UseAbility(e);
                         }
                         else
@@ -294,6 +294,19 @@
                         W.UseAbility(e);
                     else elsecount += 1;
                     if (elsecount == 10
+                        && W != null
+                        && W.CanBeCasted()
+                        && !inOverload
+                        && me.AghanimState()
+                        && !debuff
+                        && !me.IsAttacking()
+                        && me.CanCast()
+                        && !e.IsMagicImmune()
+                        && Menu.Item("Skills").GetValue<AbilityToggler>().IsEnabled(W.Name)
+                    )
+                        W.UseAbility();
+                    else elsecount += 1;
+                    if (elsecount == 11
                         && Q != null
                         && Q.CanBeCasted()
                         && !inOverload
@@ -304,7 +317,7 @@
                     )
                         Q.UseAbility();
                     else elsecount += 1;
-                    if (elsecount == 11
+                    if (elsecount == 12
                         && atos != null
                         && atos.CanBeCasted()
                         && me.CanCast()
@@ -315,7 +328,7 @@
                     )
                         atos.UseAbility(e);
                     else elsecount += 1;
-                    if (elsecount == 12
+                    if (elsecount == 13
                         && shiva != null
                         && shiva.CanBeCasted()
                         && me.CanCast()
@@ -325,20 +338,56 @@
                     )
                         shiva.UseAbility();
                     else elsecount += 1;
-                    if (elsecount == 13
+                    if (elsecount == 14
                         && R != null
                         && R.CanBeCasted()
                         && !inUltBall
                         && !R.IsInAbilityPhase
                         && !R.IsChanneling
                         && !me.IsChanneling()
-                        && (Menu.Item("AutoOverload").GetValue<bool>() && inVortex || !inVortex)
+                        && (Menu.Item("AutoOverload").GetValue<bool>() 
+                        && debuff 
+                        || !debuff)
                         && !inOverload
                         && distance <= me.AttackRange
                         && !e.IsMagicImmune()
+                        && (Menu.Item("savemanamode").GetValue<bool>() 
+                        && !e.IsMoving 
+                        || !Menu.Item("savemanamode").GetValue<bool>())
                         && Menu.Item("Skills").GetValue<AbilityToggler>().IsEnabled(R.Name)
                     )
-                        R.UseAbility(me.Position);
+                        R.UseAbility(Prediction.InFront(me, 1));
+                }
+                else
+                {
+                    if (Q != null
+                        && Q.CanBeCasted()
+                        && !inOverload
+                        && distance <= Q.GetAbilityData("static_remnant_radius") + me.HullRadius
+                        && Menu.Item("Skills").GetValue<AbilityToggler>().IsEnabled(Q.Name)
+                        && me.CanCast()
+                        && !e.IsMagicImmune()
+                    )
+                        Q.UseAbility();
+                    if (shiva != null
+                        && shiva.CanBeCasted()
+                        && me.CanCast()
+                        && !e.IsMagicImmune()
+                        && Menu.Item("Items").GetValue<AbilityToggler>().IsEnabled(shiva.Name)
+                        && distance <= 600
+                    )
+                        shiva.UseAbility();
+                    if (W != null
+                        && W.CanBeCasted()
+                        && !inOverload
+                        && me.AghanimState()
+                        && !debuff
+                        && !me.IsAttacking()
+                        && me.CanCast()
+                        && !e.IsMagicImmune()
+                        && Menu.Item("Skills").GetValue<AbilityToggler>().IsEnabled(W.Name)
+                    )
+                        W.UseAbility();
                 }
                 if (Menu.Item("orbwalk").GetValue<bool>())
                 {

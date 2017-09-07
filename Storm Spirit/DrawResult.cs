@@ -1,5 +1,7 @@
 ﻿
 using Ensage.SDK.Extensions;
+using PlaySharp.Toolkit.Helper;
+
 namespace StormSpirit
 {
     using System;
@@ -39,16 +41,14 @@ namespace StormSpirit
                                         me.MaximumMana / 100 * R.GetAbilityData("ball_lightning_initial_mana_percentage");
 
                     var costPerUnit = (12 + me.MaximumMana * 0.007) / 100.0;
-
+                    var calcEnemyHealth = v.Health<=0 ? 0 : v.Health - damage[v.Handle];
+                    var calcMyMana = useMana >= me.Mana ? 0 : me.Mana - useMana;
                     var rManacost = startManaCost + costPerUnit * Math.Floor(distance / 100) * 100;
-                    var text1 = v.Health <= damage[v.Handle] ? "✔ Damage:" + Math.Floor(damage[v.Handle])
-                                                             : "✘ Damage:" + (int)Math.Floor(damage[v.Handle]);
-                    var text2 = me.Mana >= useMana ? "✔ Mana:" + (int)Math.Floor(useMana) : "✘ Mana:" + (int)Math.Floor(useMana);
+                    var text1 = v.Health <= damage[v.Handle] ? "✔ Damage:" + Math.Floor(damage[v.Handle]) + "(Easy Kill)"
+                                                             : "✘ Damage:" + (int)Math.Floor(damage[v.Handle])+"("+ (int)calcEnemyHealth + ")";
+                    var text2 = me.Mana >= useMana ? "✔ Mana:" + (int)Math.Floor(useMana)+"("+ (int)calcMyMana +")" : "✘ Mana:" + (int)Math.Floor(useMana)+"("+ (int)calcMyMana +")";
                     var text3 = me.Mana >= rManacost ? "✔ Distance:" + (int)me.Distance2D(v) : "✘ Distance:" + (int)me.Distance2D(v);
                     var size = new Vector2(15, 15);
-                    var textSize1 = Drawing.MeasureText(text1, "Comic Sans MS", size, FontFlags.DropShadow);//"Arial"  "Cursive""Comic Sans MS"
-                    var textSize2 = Drawing.MeasureText(text2, "Comic Sans MS", size, FontFlags.DropShadow);
-                    var textSize3 = Drawing.MeasureText(text3, "Comic Sans MS", size, FontFlags.DropShadow);
                     var position1 = new Vector2(screenPos.X + 65, screenPos.Y + 12);
                     var position2 = new Vector2(screenPos.X + 65, screenPos.Y + 24);
                     var position3 = new Vector2(screenPos.X + 65, screenPos.Y + 36);
