@@ -1,60 +1,19 @@
-using Ensage.Common.Extensions;
-
-namespace StormSpirit
+﻿namespace StormSpirit
 {
-    using System;
-    using System.Collections.Generic;
-    using Ensage;
-    using Ensage.Common;
-    using Ensage.Common.Menu;
-    using SharpDX;
+    using System.Threading.Tasks;
+    using Ensage.Common.Extensions;
     using Ensage.SDK.Extensions;
-
-    partial class StormSpirit
+    using Ensage.Common.Threading;
+    using SharpDX;
+    partial class Combo
     {
-        public static void DrawingOnCore()
+        public float lastblinkRange, lastqRange, lastwRange, lastrRange;
+        public float blinkRange, qRange, wRange, rRange;
+        public virtual async Task DrawingRangeDisplay()
         {
-            if (Menu.Item("Range Blink").GetValue<bool>() && blink != null)
+            if (Config.RangeStaticRemnant.Value && Q != null && Q.Level > 0)
             {
-                blinkRange = 1200;
-                if (BlinkRange == null)
-                {
-                    if (me.IsAlive)
-                    {
-                        BlinkRange = me.AddParticleEffect("materials/ensage_ui/particles/range_display_mod.vpcf");
-
-                        BlinkRange.SetControlPoint(3, new Vector3(5, 0, 0));
-                        BlinkRange.SetControlPoint(2, new Vector3(255, 0, 222));
-                        BlinkRange.SetControlPoint(1, new Vector3(blinkRange, 0, 222));
-                    }
-                }
-                else
-                {
-                    if (!me.IsAlive)
-                    {
-                        BlinkRange.Dispose();
-                        BlinkRange = null;
-                    }
-                    else if (lastblinkRange != blinkRange)
-                    {
-                        BlinkRange.Dispose();
-                        lastblinkRange = blinkRange;
-                        BlinkRange = me.AddParticleEffect("materials/ensage_ui/particles/range_display_mod.vpcf");
-
-                        BlinkRange.SetControlPoint(3, new Vector3(5, 0, 0));
-                        BlinkRange.SetControlPoint(2, new Vector3(255, 0, 222));
-                        BlinkRange.SetControlPoint(1, new Vector3(blinkRange, 0, 222));
-                    }
-                }
-            }
-            else
-            {
-                if (BlinkRange != null) BlinkRange.Dispose();
-                BlinkRange = null;
-            }
-            if (Menu.Item("Range Static Remnant").GetValue<bool>() && Q != null && Q.Level > 0)
-            {
-                qRange = Q.GetAbilityData("static_remnant_radius"); 
+                qRange = Q.GetAbilityData("static_remnant_radius");
                 if (QRange == null)
                 {
                     if (me.IsAlive)
@@ -90,7 +49,7 @@ namespace StormSpirit
                 if (QRange != null) QRange.Dispose();
                 QRange = null;
             }
-            if (Menu.Item("Range Electric Vortex").GetValue<bool>() && W != null && W.Level > 0)
+            if (Config.RangeElectricVortex.Value && W != null && W.Level > 0)
             {
                 wRange = W.GetCastRange();
                 if (WRange == null)
@@ -128,6 +87,8 @@ namespace StormSpirit
                 if (WRange != null) WRange.Dispose();
                 WRange = null;
             }
+            await Await.Delay(500);
         }
+        
     }
 }
