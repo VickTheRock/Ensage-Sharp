@@ -14,29 +14,35 @@
             var e = TargetSelector.Active.GetTargets()
                 .FirstOrDefault(x => !x.IsInvulnerable() && x.IsAlive);
             if (ExUnit.IsInvisible(me)) return;
-            
-            if ((cyclone != null && cyclone.CanBeCasted() || force != null && force.CanBeCasted()
-                 || sheep != null && sheep.CanBeCasted() || atos != null && atos.CanBeCasted() || W != null && W.CanBeCasted())
+
+            var dagon = me.GetDagon();
+            if ((cyclone != null && cyclone.Item.CanBeCasted() || force != null && force.Item.CanBeCasted()
+                 || sheep != null && sheep.Item.CanBeCasted() || atos != null && atos.Item.CanBeCasted() || W != null && W.CanBeCasted())
                 && me.Distance2D(e) <= 900)
             {
-                if (cyclone != null && cyclone.CanBeCasted()
-                    && Config.Link.Value.IsEnabled(cyclone.Name))
+                if (cyclone != null && cyclone.Item.CanBeCasted()
+                    && cyclone.Item.IsValid
+                    && Config.Link.Value.IsEnabled(cyclone.Item.Name))
                     cyclone.UseAbility(e);
-                else if (force != null && force.CanBeCasted() &&
-                         Config.Link.Value.IsEnabled(force.Name))
+                else if (force != null
+                    && force.Item.IsValid && force.Item.CanBeCasted() &&
+                         Config.Link.Value.IsEnabled(force.Item.Name))
                     force.UseAbility(e);
-                else if (atos != null && atos.CanBeCasted()
-                         && Config.Link.Value.IsEnabled(atos.Name))
+                else if (atos != null && atos.Item.CanBeCasted()
+                    && atos.Item.IsValid
+                         && Config.Link.Value.IsEnabled(atos.Item.Name))
                     atos.UseAbility(e);
                 else if (dagon != null && dagon.CanBeCasted()
+                    && dagon.IsValid
                          && Config.Link.Value.IsEnabled("item_dagon_5"))
                     dagon.UseAbility(e);
                 else if (W != null && W.CanBeCasted() &&
                          Config.Link.Value.IsEnabled(W.Name)
                          && !ExUnit.IsMagicImmune(e))
                     W.UseAbility(e);
-                else if (sheep != null && sheep.CanBeCasted()
-                         && Config.Link.Value.IsEnabled(sheep.Name))
+                else if (sheep != null && sheep.Item.CanBeCasted()
+                    && sheep.Item.IsValid
+                         && Config.Link.Value.IsEnabled(sheep.Item.Name))
                     sheep.UseAbility(e);
             }
             await Await.Delay(250);

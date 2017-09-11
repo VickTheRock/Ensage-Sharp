@@ -39,11 +39,28 @@
                 R.UseAbility(pos);
                 if (
                     travel != null
-                    && travel.CanBeCasted()
+                    && travel.Item.IsValid
+                    && travel.Item.CanBeCasted()
                     && !ExUnit.IsChanneling(me)
                     && Config.Escape.Value.IsEnabled("item_travel_boots_2")
                 )
                     travel.UseAbility(f.Position);
+                else if (
+                    travel2 != null
+                    && travel2.Item.IsValid
+                    && travel2.Item.CanBeCasted()
+                    && !ExUnit.IsChanneling(me)
+                    && Config.Escape.Value.IsEnabled("item_travel_boots_2")
+                )
+                    travel2.UseAbility(f.Position);
+                else if (
+                    tp != null
+                    && tp.Item.IsValid
+                    && tp.Item.CanBeCasted()
+                    && !ExUnit.IsChanneling(me)
+                    && Config.Escape.Value.IsEnabled("item_travel_boots_2")
+                )
+                    tp.UseAbility(f.Position);
             }
             await Await.Delay(250);
         }
