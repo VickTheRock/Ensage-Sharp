@@ -417,7 +417,7 @@
                 && !inUltBall
                 && !R.IsInAbilityPhase
                 && !R.IsChanneling
-                && !W.CanBeCasted()
+                && (!W.CanBeCasted() || W==null)
                 && !ExUnit.IsChanneling(me)
                 && (Config.AutoOverload.Value
                     && buff
