@@ -61,7 +61,10 @@
         private IInventoryManager Inventory { get; }
 
         [ItemBinding]
+        
         public item_ethereal_blade ethereal { get; private set; }
+        [ItemBinding]
+        public item_mjollnir mjollnir { get; private set; }
         [ItemBinding]
         public item_force_staff force { get; private set; }
         [ItemBinding]
@@ -157,11 +160,10 @@
                     && Config.ItemToggler.Value.IsEnabled(soul.Item.Name)
                     && me.CanCast()
                     && me.Health >= me.MaximumHealth * 0.4
-                    && me.Mana <= me.MaximumMana * 0.2
+                    && me.Mana <= me.MaximumMana * 0.4
                 )
                 {
                     soul.UseAbility();
-
                     await Await.Delay(GetItemDelay(e), token);
                 }
                 if ( // Arcane Boots Item
@@ -401,6 +403,19 @@
                     shiva.UseAbility();
                     await Await.Delay(GetItemDelay(e), token);
                 }
+                else elsecount += 1;
+                if (elsecount == 14
+                   && mjollnir != null
+                   && mjollnir.Item.CanBeCasted()
+                   && me.CanCast()
+                   && !ExUnit.IsMagicImmune(e)
+                   && Config.ItemToggler.Value.IsEnabled(mjollnir.Item.Name)
+                   && me.Distance2D(e) <= 600
+                   )
+                {
+                    mjollnir.UseAbility(me);
+                    await Await.Delay(GetItemDelay(e), token);
+                } 
 
             }
             else
@@ -444,6 +459,8 @@
                     await Await.Delay(GetItemDelay(e), token);
                 }
             }
+            Vector3 start = e.NetworkActivity == NetworkActivity.Move ? new Vector3((float)((R.GetCastDelay(me, me, true) + 0.3) * Math.Cos(e.RotationRad) * e.MovementSpeed + e.Position.X),
+                                               (float)((R.GetCastDelay(me, me, true) + 0.5) * Math.Sin(e.RotationRad) * e.MovementSpeed + e.NetworkPosition.Y), e.NetworkPosition.Z) : e.NetworkPosition;
             if (R != null
                 && R.CanBeCasted()
                 && !inUltBall
@@ -454,17 +471,20 @@
                     && buff
                     || !buff)
                 && !inOverload
-                && distance <= me.AttackRange
-                && me.AttackBackswing() > 0.3 - me.TurnTime(e.NetworkPosition)
-                && !cooldown
+                && me.Position.Distance2D(start) <= me.AttackRange
                 && !ExUnit.IsMagicImmune(e)
                 && (Config.savemanamode.Value
-                    && !e.IsMoving
+                && me.AttackBackswing() > 0.3 - me.TurnTime(e.NetworkPosition)
+                && !cooldown
                     || !Config.savemanamode.Value)
                 && Config.AbilityToggler.Value.IsEnabled(R.Name)
             )
             {
-                R.UseAbility(ExUnit.InFront(me, 5));
+                me.Stop();
+                float angle = e.FindAngleBetween(me.Position, true);
+                Vector3 pos = new Vector3((float)(me.Position.X - 15 * Math.Cos(angle)),
+                    (float)(me.Position.Y - 15 * Math.Sin(angle)), me.Position.Z);
+                R.UseAbility(pos);
                 await Await.Delay(GetAbilityDelay(me, R) + 100, token);
             }
             if (me.Distance2D(e) <= me.GetAttackRange() / 2 && ExUnit.CanAttack(me) && !me.IsAttacking())
@@ -506,7 +526,7 @@
             {
                 cooldown = Orbwalking.AttackOnCooldown();
             }
-            catch (Exception exception)
+            catch (Exception)
             {
             }
             if (e != null && ExUnit.IsLinkensProtected(e))
