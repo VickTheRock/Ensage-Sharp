@@ -60,60 +60,21 @@
 
         private IInventoryManager Inventory { get; }
 
-        [ItemBinding]
         
-        public item_ethereal_blade ethereal { get; private set; }
-        [ItemBinding]
-        public item_mjollnir mjollnir { get; private set; }
-        [ItemBinding]
-        public item_force_staff force { get; private set; }
-        [ItemBinding]
-        public item_urn_of_shadows urn { get; private set; }
-        [ItemBinding]
-        public item_black_king_bar bkb { get; private set; }
-        [ItemBinding]
-        public item_lotus_orb lotus { get; private set; }
-        [ItemBinding]
-        public item_veil_of_discord vail { get; private set; }
-        [ItemBinding]
-        public item_cheese cheese { get; private set; }
-        [ItemBinding]
-        public item_orchid orchid { get; private set; }
-        [ItemBinding]
-        public item_shivas_guard shiva { get; private set; }
-        [ItemBinding]
-        public item_bloodthorn bloodthorn { get; private set; }
-        [ItemBinding]
-        public item_rod_of_atos atos { get; private set; }
-        [ItemBinding]
-        public item_soul_ring soul { get; private set; }
-        [ItemBinding]
-        public item_arcane_boots arcane { get; private set; }
-
-        [ItemBinding]
-        public item_sheepstick sheep { get; private set; }
-        [ItemBinding]
-        public item_travel_boots travel { get; private set; }
-        [ItemBinding]
-
-        public item_cyclone cyclone { get; private set; }
-        [ItemBinding]
-        public item_travel_boots_2 travel2 { get; private set; }
-        [ItemBinding]
-        public item_tpscroll tp { get; private set; }
         public ParticleEffect BlinkRange { get; set; }
         public ParticleEffect QRange { get; set; }
         public ParticleEffect WRange { get; set; }
         public ParticleEffect RRange { get; set; }
         public ParticleEffect Effect;
 
+        public static Item dagon, sheep, ethereal, cyclone, force, urn, glimmer, bkb, lotus, vail, cheese, ghost, orchid, atos, soul, arcane, shiva, travel, mjollnir;
         public override async Task ExecuteAsync(CancellationToken token)
         {
             var e = TargetSelector.Active.GetTargets()
                 .FirstOrDefault(x => !x.IsInvulnerable() && x.IsAlive);
             if (e == null) return;
             var debuff = e.FindModifier("modifier_storm_spirit_electric_vortex_pull") ?? e.FindModifier("modifier_sheepstick_debuff") ?? e.FindModifier("modifier_rod_of_atos_debuff");
-
+           
 
             var buff = e.HasModifiers(new[]
             {
@@ -136,7 +97,6 @@
                                 me.MaximumMana / 100 * R.GetAbilityData("ball_lightning_initial_mana_percentage");
             var costPerUnit = (12 + me.MaximumMana * 0.007) / 100.0;
             var rManacost = startManaCost + costPerUnit * Math.Floor(distance / 100) * 100;
-            var dagon = me.GetDagon();
             var enemies = EntityManager<Hero>.Entities.Count(
                               x => x.IsValid && x.IsAlive && !x.IsIllusion && x.Team != me.Team && x.Distance2D(me) <= 700) >= Config.Heel.Item.GetValue<Slider>().Value;
             if (!lotusBuff)
@@ -144,11 +104,11 @@
                 if (
                     // cheese
                     cheese != null
-                    && cheese.Item.CanBeCasted()
+                    && cheese.CanBeCasted()
                     && (me.Health <= me.MaximumHealth * 0.3
                         || me.Mana <= me.MaximumMana * 0.2)
                     && distance <= 700
-                    && Config.ItemToggler.Value.IsEnabled(cheese.Item.Name)
+                    && Config.ItemToggler.Value.IsEnabled(cheese.Name)
                 )
                 {
                     cheese.UseAbility();
@@ -156,8 +116,8 @@
                 }
                 if ( // SoulRing Item 
                     soul != null
-                    && soul.Item.CanBeCasted()
-                    && Config.ItemToggler.Value.IsEnabled(soul.Item.Name)
+                    && soul.CanBeCasted()
+                    && Config.ItemToggler.Value.IsEnabled(soul.Name)
                     && me.CanCast()
                     && me.Health >= me.MaximumHealth * 0.4
                     && me.Mana <= me.MaximumMana * 0.4
@@ -168,8 +128,8 @@
                 }
                 if ( // Arcane Boots Item
                     arcane != null
-                    && arcane.Item.CanBeCasted()
-                    && Config.ItemToggler.Value.IsEnabled(arcane.Item.Name)
+                    && arcane.CanBeCasted()
+                    && Config.ItemToggler.Value.IsEnabled(arcane.Name)
                     && me.CanCast()
                     && me.Mana <= me.MaximumMana * 0.4
                 )
@@ -201,9 +161,9 @@
                 }
                 else elsecount += 1;
                 if (vail != null
-                    && vail.Item.CanBeCasted()
+                    && vail.CanBeCasted()
 
-                    && Config.ItemToggler.Value.IsEnabled(vail.Item.Name)
+                    && Config.ItemToggler.Value.IsEnabled(vail.Name)
                     && me.CanCast()
                     && !ExUnit.IsMagicImmune(e)
                 )
@@ -212,7 +172,7 @@
                     await Await.Delay(GetItemDelay(e), token);
                 }
                 if (orchid != null
-                    && orchid.Item.CanBeCasted()
+                    && orchid.CanBeCasted()
                     && me.CanCast()
                     && !ExUnit.IsLinkensProtected(e)
                     && !ExUnit.IsMagicImmune(e)
@@ -222,26 +182,15 @@
                     orchid.UseAbility(e);
                     await Await.Delay(GetItemDelay(e), token);
                 }
-                if (bloodthorn != null
-                    && bloodthorn.Item.CanBeCasted()
-                    && me.CanCast()
-                    && !ExUnit.IsLinkensProtected(e)
-                    && !ExUnit.IsMagicImmune(e)
-                    && Config.ItemToggler.Value.IsEnabled("item_bloodthorn")
-                )
-                {
-                    bloodthorn.UseAbility(e);
-                    await Await.Delay(GetItemDelay(e), token);
-                }
                 if (elsecount == 2
                     && sheep != null
-                    && sheep.Item.CanBeCasted()
+                    && sheep.CanBeCasted()
                     && me.CanCast()
                     && (checkTimeModif || !buff)
                     && !ExUnit.IsLinkensProtected(e)
                     && !ExUnit.IsMagicImmune(e)
                     && e.ClassId != ClassId.CDOTA_Unit_Hero_Tidehunter
-                    && Config.ItemToggler.Value.IsEnabled(sheep.Item.Name)
+                    && Config.ItemToggler.Value.IsEnabled(sheep.Name)
                 )
                 {
                     sheep.UseAbility(e);
@@ -292,12 +241,12 @@
                 else elsecount += 1;
                 if (elsecount == 6
                     && atos != null
-                    && atos.Item.CanBeCasted()
+                    && atos.CanBeCasted()
                     && me.CanCast()
                     && (checkTimeModif || !buff)
                     && !ExUnit.IsLinkensProtected(e)
                     && !ExUnit.IsMagicImmune(e)
-                    && Config.ItemToggler.Value.IsEnabled(atos.Item.Name)
+                    && Config.ItemToggler.Value.IsEnabled(atos.Name)
                 )
                 {
                     atos.UseAbility(e);
@@ -311,7 +260,7 @@
                     && me.CanCast()
                     && (ethereal == null
                         || ExUnit.HasModifier(e, "modifier_item_ethereal_blade_slow")
-                        || ethereal.Item.Cooldown < 17)
+                        || ethereal.Cooldown < 17)
                     && !ExUnit.IsLinkensProtected(e)
                     && !ExUnit.IsMagicImmune(e)
                 )
@@ -321,9 +270,9 @@
                 }
                 else elsecount += 1;
                 if (elsecount == 8
-                    && urn != null && urn.Item.CanBeCasted() && urn.Item.CurrentCharges > 0
-                    && distance <= urn.Item.GetCastRange()
-                    && Config.ItemToggler.Value.IsEnabled(urn.Item.Name)
+                    && urn != null && urn.CanBeCasted() && urn.CurrentCharges > 0
+                    && distance <= urn.GetCastRange()
+                    && Config.ItemToggler.Value.IsEnabled(urn.Name)
                 )
                 {
                     urn.UseAbility(e);
@@ -332,9 +281,9 @@
                 else elsecount += 1;
                 if (elsecount == 9
                     && bkb != null
-                    && bkb.Item.CanBeCasted()
+                    && bkb.CanBeCasted()
                     && enemies
-                    && Config.ItemToggler.Value.IsEnabled(bkb.Item.Name)
+                    && Config.ItemToggler.Value.IsEnabled(bkb.Name)
                 )
                 {
                     bkb.UseAbility();
@@ -343,9 +292,9 @@
                 else elsecount += 1;
                 if (elsecount == 10
                     && lotus != null
-                    && lotus.Item.CanBeCasted()
+                    && lotus.CanBeCasted()
                     && enemies
-                    && Config.ItemToggler.Value.IsEnabled(lotus.Item.Name)
+                    && Config.ItemToggler.Value.IsEnabled(lotus.Name)
                 )
                 {
                     lotus.UseAbility(me);
@@ -354,16 +303,16 @@
                 else elsecount += 1;
                 if (elsecount == 11
                     && ethereal != null
-                    && ethereal.Item.CanBeCasted()
+                    && ethereal.CanBeCasted()
                     && me.CanCast()
                     && !ExUnit.IsLinkensProtected(e)
                     && !ExUnit.IsMagicImmune(e)
-                    && Config.ItemToggler.Value.IsEnabled(ethereal.Item.Name)
+                    && Config.ItemToggler.Value.IsEnabled(ethereal.Name)
                 )
                 {
                     if (Config.debuff.Value)
                     {
-                        var speed = ethereal.Item.GetAbilityData("projectile_speed");
+                        var speed = ethereal.GetAbilityData("projectile_speed");
                         var time = e.Distance2D(me) / speed;
                         ethereal.UseAbility(e);
                         await Await.Delay((int)(time * 1000.0f + Game.Ping) + 30, token);
@@ -393,10 +342,10 @@
                 else elsecount += 1;
                 if (elsecount == 13
                     && shiva != null
-                    && shiva.Item.CanBeCasted()
+                    && shiva.CanBeCasted()
                     && me.CanCast()
                     && !ExUnit.IsMagicImmune(e)
-                    && Config.ItemToggler.Value.IsEnabled(shiva.Item.Name)
+                    && Config.ItemToggler.Value.IsEnabled(shiva.Name)
                     && distance <= 600
                 )
                 {
@@ -406,10 +355,10 @@
                 else elsecount += 1;
                 if (elsecount == 14
                    && mjollnir != null
-                   && mjollnir.Item.CanBeCasted()
+                   && mjollnir.CanBeCasted()
                    && me.CanCast()
                    && !ExUnit.IsMagicImmune(e)
-                   && Config.ItemToggler.Value.IsEnabled(mjollnir.Item.Name)
+                   && Config.ItemToggler.Value.IsEnabled(mjollnir.Name)
                    && me.Distance2D(e) <= 600
                    )
                 {
@@ -434,10 +383,10 @@
                 }
 
                 if (shiva != null
-                    && shiva.Item.CanBeCasted()
+                    && shiva.CanBeCasted()
                     && me.CanCast()
                     && !ExUnit.IsMagicImmune(e)
-                    && Config.ItemToggler.Value.IsEnabled(shiva.Item.Name)
+                    && Config.ItemToggler.Value.IsEnabled(shiva.Name)
                     && distance <= 600
                 )
                 {
@@ -459,8 +408,10 @@
                     await Await.Delay(GetItemDelay(e), token);
                 }
             }
+
             Vector3 start = e.NetworkActivity == NetworkActivity.Move ? new Vector3((float)((R.GetCastDelay(me, me, true) + 0.3) * Math.Cos(e.RotationRad) * e.MovementSpeed + e.Position.X),
-                                               (float)((R.GetCastDelay(me, me, true) + 0.5) * Math.Sin(e.RotationRad) * e.MovementSpeed + e.NetworkPosition.Y), e.NetworkPosition.Z) : e.NetworkPosition;
+                                               (float)((R.GetCastDelay(me, me, true) + 0.3) * Math.Sin(e.RotationRad) * e.MovementSpeed + e.NetworkPosition.Y), e.NetworkPosition.Z) : e.NetworkPosition;
+            //Console.WriteLine(Game.Ping);
             if (R != null
                 && R.CanBeCasted()
                 && !inUltBall
@@ -529,6 +480,25 @@
             catch (Exception)
             {
             }
+            ethereal = me.FindItem("item_ethereal_blade");
+            cyclone = me.FindItem("item_cyclone");
+            force = me.FindItem("item_force_staff");
+            urn = me.FindItem("item_urn_of_shadows");
+            glimmer = me.FindItem("item_glimmer_cape");
+            bkb = me.FindItem("item_black_king_bar");
+            lotus = me.FindItem("item_lotus_orb");
+            vail = me.FindItem("item_veil_of_discord");
+            cheese = me.FindItem("item_cheese");
+            ghost = me.FindItem("item_ghost");
+            orchid = me.FindItem("item_orchid") ?? me.FindItem("item_bloodthorn");
+            atos = me.FindItem("item_rod_of_atos");
+            soul = me.FindItem("item_soul_ring");
+            arcane = me.FindItem("item_arcane_boots");
+            mjollnir = me.FindItem("item_mjollnir");
+            shiva = me.FindItem("item_shivas_guard");
+            dagon = me.Inventory.Items.FirstOrDefault(item => item.Name.Contains("item_dagon"));
+            travel = me.FindItem("item_travel_boots") ?? me.FindItem("item_travel_boots_2") ?? me.FindItem("item_tpscroll");
+            sheep = e?.ClassId == ClassId.CDOTA_Unit_Hero_Tidehunter ? null : me.FindItem("item_sheepstick");
             if (e != null && ExUnit.IsLinkensProtected(e))
             {
                 Await.Block("linken", linken);
@@ -551,7 +521,6 @@
             W = ExUnit.GetAbilityById(me, AbilityId.storm_spirit_electric_vortex);
             R = ExUnit.GetAbilityById(me, AbilityId.storm_spirit_ball_lightning);
             E = ExUnit.GetAbilityById(me, AbilityId.storm_spirit_overload);
-
             if (Config.DrawingDamageEnabled.Value)
             {
                 Drawing.OnDraw += DrawingDamagePanel;
