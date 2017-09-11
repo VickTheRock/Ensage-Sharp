@@ -372,6 +372,7 @@
                 if (Q != null
                     && Q.CanBeCasted()
                     && !inOverload
+                    && (W == null || !W.CanBeCasted() ||  !Config.AbilityToggler.Value.IsEnabled(W.Name))
                     && distance <= Q.GetAbilityData("static_remnant_radius") + me.HullRadius
                     && Config.AbilityToggler.Value.IsEnabled(Q.Name)
                     && me.CanCast()
@@ -407,6 +408,17 @@
                     W.UseAbility();
                     await Await.Delay(GetItemDelay(e), token);
                 }
+                if (mjollnir != null
+                  && mjollnir.CanBeCasted()
+                  && me.CanCast()
+                  && !ExUnit.IsMagicImmune(e)
+                  && Config.ItemToggler.Value.IsEnabled(mjollnir.Name)
+                  && me.Distance2D(e) <= 600
+                  )
+                {
+                    mjollnir.UseAbility(me);
+                    await Await.Delay(GetItemDelay(e), token);
+                }
             }
 
             Vector3 start = e.NetworkActivity == NetworkActivity.Move ? new Vector3((float)((R.GetCastDelay(me, me, true) + 0.3) * Math.Cos(e.RotationRad) * e.MovementSpeed + e.Position.X),
@@ -417,7 +429,7 @@
                 && !inUltBall
                 && !R.IsInAbilityPhase
                 && !R.IsChanneling
-                && (!W.CanBeCasted() || W==null)
+                && (W == null || !W.CanBeCasted() || !Config.AbilityToggler.Value.IsEnabled(W.Name))
                 && !ExUnit.IsChanneling(me)
                 && (Config.AutoOverload.Value
                     && buff
