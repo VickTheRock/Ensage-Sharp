@@ -59,12 +59,14 @@
                              && R.CanBeCasted();
                 var eReady = E != null && Config.AbilityToggler.Value.IsEnabled(E.Name)
                              && E.Level > 0;
-                if (arcane != null && arcane.Item.CanBeCasted()
+                if (arcane != null
+                    && arcane.Item.IsValid && arcane.Item.CanBeCasted()
                     && Config.ItemToggler.Value.IsEnabled(arcane.Item.Name))
                 {
                     manacost -= 125;
                 }
-                if (soul != null && soul.Item.CanBeCasted()
+                if (soul != null
+                    && soul.Item.IsValid && soul.Item.CanBeCasted()
                     && Config.ItemToggler.Value.IsEnabled(soul.Item.Name))
                 {
                     manacost -= 150;
@@ -80,7 +82,8 @@
                     }
                     else goto gotoDamage;
                 }
-                if (orchid != null && orchid.Item.CanBeCasted() && Config.ItemToggler.Value.IsEnabled("item_bloodthorn")
+                if (orchid != null
+                    && orchid.Item.IsValid && orchid.Item.CanBeCasted() && Config.ItemToggler.Value.IsEnabled("item_bloodthorn")
                     && !ExUnit.HasModifier(victim, "modifier_bloodthorn_debuff")
                     && !ExUnit.HasModifier(victim, "modifier_orchid_malevolence_debuff"))
                 {
@@ -91,7 +94,8 @@
                     }
                     else goto gotoDamage;
                 }
-                if (bloodthorn != null && bloodthorn.Item.CanBeCasted() && Config.ItemToggler.Value.IsEnabled("item_bloodthorn")
+                if (bloodthorn != null
+                    && bloodthorn.Item.IsValid && bloodthorn.Item.CanBeCasted() && Config.ItemToggler.Value.IsEnabled("item_bloodthorn")
                     && !ExUnit.HasModifier(victim, "modifier_bloodthorn_debuff")
                     && !ExUnit.HasModifier(victim, "modifier_orchid_malevolence_debuff"))
                 {
@@ -102,7 +106,8 @@
                     }
                     else goto gotoDamage;
                 }
-                if (vail != null && vail.Item.CanBeCasted()
+                if (vail != null
+                    && vail.Item.IsValid && vail.Item.CanBeCasted()
                     && Config.ItemToggler.Value.IsEnabled(vail.Item.Name)
                     && !ExUnit.HasModifier(victim, "modifier_item_veil_of_discord_debuff"))
                 {
@@ -137,7 +142,8 @@
                 var spellamplymult = 1 + me.TotalIntelligence / 16 / 100;
                 dmgResult = dmgResult * spellamplymult;
                 var dagon = me.GetDagon();
-                if (dagon != null && dagon.CanBeCasted() && victim.Handle == e?.Handle && Config.ItemToggler.Value.IsEnabled("item_dagon_5"))
+                if (dagon != null
+                    && dagon.IsValid && dagon.CanBeCasted() && victim.Handle == e?.Handle && Config.ItemToggler.Value.IsEnabled("item_dagon_5"))
                 {
                     if (manacost + dagon.ManaCost < me.Mana)
                     {
@@ -146,7 +152,8 @@
                     }
                     else goto gotoDamage;
                 }
-                if (shiva != null && shiva.Item.CanBeCasted() && Config.ItemToggler.Value.IsEnabled(shiva.Item.Name))
+                if (shiva != null
+                    && shiva.Item.IsValid && shiva.Item.CanBeCasted() && Config.ItemToggler.Value.IsEnabled(shiva.Item.Name))
                 {
                     if (manacost + shiva.Item.ManaCost < me.Mana)
                     {
@@ -158,7 +165,8 @@
 
                 int etherealdamage = (int)(me.TotalIntelligence * 2 + 75);
 
-                if (ethereal != null && ethereal.Item.CanBeCasted() && victim.Handle == e?.Handle)
+                if (ethereal != null
+                    && ethereal.Item.IsValid && ethereal.Item.CanBeCasted() && victim.Handle == e?.Handle)
                 {
                     if (manacost + ethereal.Item.ManaCost < me.Mana)
                     {
@@ -177,7 +185,8 @@
                 {
                     dmgResult *= 1.25;
                 }
-                if (vail != null && vail.Item.CanBeCasted()
+                if (vail != null
+                    && vail.Item.IsValid && vail.Item.CanBeCasted()
                     && Config.ItemToggler.Value.IsEnabled(vail.Item.Name)
                     && !ExUnit.HasModifier(victim, "modifier_item_veil_of_discord_debuff"))
                 {
@@ -186,32 +195,17 @@
                         dmgResult *= 1.25;
                     }
                 }
-                if (orchid != null && orchid.Item.CanBeCasted() && Config.ItemToggler.Value.IsEnabled("item_bloodthorn")
-                    && !ExUnit.HasModifier(victim, "modifier_bloodthorn_debuff")
-                    && !ExUnit.HasModifier(victim, "modifier_orchid_malevolence_debuff"))
-                {
-                    if (orchidOn)
-                    {
-                        dmgResult *= 1.3;
-                    }
-                }
-                if (bloodthorn != null && bloodthorn.Item.CanBeCasted() && Config.ItemToggler.Value.IsEnabled("item_bloodthorn")
-                    && !ExUnit.HasModifier(victim, "modifier_bloodthorn_debuff")
-                    && !ExUnit.HasModifier(victim, "modifier_orchid_malevolence_debuff"))
-                {
-                    if (orchidOn)
-                    {
-                        dmgResult *= 1.3;
-                    }
-                }
-                if (sheep != null && sheep.Item.CanBeCasted() && Config.ItemToggler.Value.IsEnabled(sheep.Item.Name))
+                
+                if (sheep != null
+                    && sheep.Item.IsValid && sheep.Item.CanBeCasted() && Config.ItemToggler.Value.IsEnabled(sheep.Item.Name))
                 {
                     if (manacost + 100 < me.Mana)
                     {
                         dmgResult += sheepDmg;
                     }
                 }
-                if (bloodthorn != null && bloodthorn.Item.CanBeCasted()
+                if (bloodthorn != null
+                    && bloodthorn.Item.IsValid && bloodthorn.Item.CanBeCasted()
                     && Config.ItemToggler.Value.IsEnabled("item_bloodthorn") && orchidOn || ExUnit.HasModifier(victim, "modifier_bloodthorn_debuff"))
                 {
                     if (qReady && eReady)
@@ -240,19 +234,6 @@
                         }
                     }
                 }
-
-                if (ExUnit.HasModifier(victim, "modifier_orchid_malevolence_debuff") || ExUnit.HasModifier(victim, "modifier_bloodthorn_debuff"))
-                {
-                    dmgResult *= 1.3;
-                }
-                if (ExUnit.HasModifier(victim, "modifier_kunkka_ghost_ship_damage_absorb"))
-                    dmgResult *= 0.5;
-
-                if (ExUnit.HasModifier(victim, "modifier_bloodseeker_bloodrage") || ExUnit.HasModifier(me, "modifier_bloodseeker_bloodrage"))
-                {
-                    dmgResult *= 1.4;
-                }
-
                 if (ExUnit.HasModifier(victim, "modifier_chen_penitence"))
                 {
                     var chen =
@@ -269,9 +250,39 @@
                     if (demon != null)
                         dmgResult *= souls[demon.Spellbook.Spell2.Level];
                 }
+                if (orchid != null
+                   && orchid.Item.IsValid && orchid.Item.CanBeCasted() && Config.ItemToggler.Value.IsEnabled("item_bloodthorn")
+                   && !ExUnit.HasModifier(victim, "modifier_bloodthorn_debuff")
+                   && !ExUnit.HasModifier(victim, "modifier_orchid_malevolence_debuff"))
+                {
+                    if (orchidOn)
+                    {
+                        dmgResult *= 1.3;
+                    }
+                }
+                if (bloodthorn != null
+                    && bloodthorn.Item.IsValid && bloodthorn.Item.CanBeCasted() && Config.ItemToggler.Value.IsEnabled("item_bloodthorn")
+                    && !ExUnit.HasModifier(victim, "modifier_bloodthorn_debuff")
+                    && !ExUnit.HasModifier(victim, "modifier_orchid_malevolence_debuff"))
+                {
+                    if (orchidOn)
+                    {
+                        dmgResult *= 1.3;
+                    }
+                }
                 if (ExUnit.HasModifier(victim, "modifier_item_mask_of_madness_berserk"))
                     dmgResult *= 1.3;
+                if (ExUnit.HasModifier(victim, "modifier_orchid_malevolence_debuff") || ExUnit.HasModifier(victim, "modifier_bloodthorn_debuff"))
+                {
+                    dmgResult *= 1.3;
+                }
+                if (ExUnit.HasModifier(victim, "modifier_kunkka_ghost_ship_damage_absorb"))
+                    dmgResult *= 0.5;
 
+                if (ExUnit.HasModifier(victim, "modifier_bloodseeker_bloodrage") || ExUnit.HasModifier(me, "modifier_bloodseeker_bloodrage"))
+                {
+                    dmgResult *= 1.4;
+                }
                 if (victim.NetworkName == "CDOTA_Unit_Hero_SkeletonKing" && victim.Spellbook.SpellR.Cooldown <= 0 && victim.Mana > 140)
                     dmgResult = 0;
             }
@@ -329,33 +340,40 @@
                 {
                     manacost += W.ManaCost;
                 }
-                if (orchid != null && orchid.Item.GetCooldown(0) <= 0 && Config.ItemToggler.Value.IsEnabled("item_bloodthorn"))
+                if (orchid != null
+                    && orchid.Item.IsValid && orchid.Item.Cooldown <= 0 && Config.ItemToggler.Value.IsEnabled("item_bloodthorn"))
                 {
                     manacost += orchid.Item.ManaCost;
                 }
-                if (bloodthorn != null && bloodthorn.Item.Cooldown <= 0 && Config.ItemToggler.Value.IsEnabled("item_bloodthorn"))
+                if (bloodthorn != null
+                    && bloodthorn.Item.IsValid  && bloodthorn.Item.Cooldown <= 0 && Config.ItemToggler.Value.IsEnabled("item_bloodthorn"))
                 {
                     manacost += bloodthorn.Item.ManaCost;
                 }
-                if (lotus != null && lotus.Item.Cooldown <= 0 && Config.ItemToggler.Value.IsEnabled(lotus.Item.Name))
+                if (lotus != null
+                    && lotus.Item.IsValid && lotus.Item.Cooldown <= 0 && Config.ItemToggler.Value.IsEnabled(lotus.Item.Name))
                 {
                     manacost += lotus.Item.ManaCost;
                 }
-                if (sheep != null && sheep.Item.Cooldown <= 0 && Config.ItemToggler.Value.IsEnabled(sheep.Item.Name))
+                if (sheep != null
+                    && sheep.Item.IsValid && sheep.Item.Cooldown <= 0 && Config.ItemToggler.Value.IsEnabled(sheep.Item.Name))
                 {
                     manacost += sheep.Item.ManaCost;
                 }
 
                 var dagon = me.GetDagon();
-                if (dagon != null && dagon.Cooldown <= 0 && Config.ItemToggler.Value.IsEnabled("item_dagon_5"))
+                if (dagon != null
+                    && dagon.IsValid && dagon.Cooldown <= 0 && Config.ItemToggler.Value.IsEnabled("item_dagon_5"))
                 {
                     manacost += dagon.ManaCost;
                 }
-                if (shiva != null && shiva.Item.Cooldown <= 0 && Config.ItemToggler.Value.IsEnabled(shiva.Item.Name))
+                if (shiva != null
+                    && shiva.Item.IsValid && shiva.Item.Cooldown <= 0 && Config.ItemToggler.Value.IsEnabled(shiva.Item.Name))
                 {
                     manacost += shiva.Item.ManaCost;
                 }
-                if (ethereal != null && ethereal.Item.Cooldown <= 0)
+                if (ethereal != null
+                    && ethereal.Item.IsValid && ethereal.Item.Cooldown <= 0)
                 {
                     manacost += ethereal.Item.ManaCost;
                 }

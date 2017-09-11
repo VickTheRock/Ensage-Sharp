@@ -21,15 +21,19 @@
                 && me.Distance2D(e) <= 900)
             {
                 if (cyclone != null && cyclone.Item.CanBeCasted()
+                    && cyclone.Item.IsValid
                     && Config.Link.Value.IsEnabled(cyclone.Item.Name))
                     cyclone.UseAbility(e);
-                else if (force != null && force.Item.CanBeCasted() &&
+                else if (force != null
+                    && force.Item.IsValid && force.Item.CanBeCasted() &&
                          Config.Link.Value.IsEnabled(force.Item.Name))
                     force.UseAbility(e);
                 else if (atos != null && atos.Item.CanBeCasted()
+                    && atos.Item.IsValid
                          && Config.Link.Value.IsEnabled(atos.Item.Name))
                     atos.UseAbility(e);
                 else if (dagon != null && dagon.CanBeCasted()
+                    && dagon.IsValid
                          && Config.Link.Value.IsEnabled("item_dagon_5"))
                     dagon.UseAbility(e);
                 else if (W != null && W.CanBeCasted() &&
@@ -37,6 +41,7 @@
                          && !ExUnit.IsMagicImmune(e))
                     W.UseAbility(e);
                 else if (sheep != null && sheep.Item.CanBeCasted()
+                    && sheep.Item.IsValid
                          && Config.Link.Value.IsEnabled(sheep.Item.Name))
                     sheep.UseAbility(e);
             }

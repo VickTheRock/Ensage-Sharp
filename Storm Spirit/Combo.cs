@@ -144,6 +144,7 @@
                 if (
                     // cheese
                     cheese != null
+                    && cheese.Item.IsValid
                     && cheese.Item.CanBeCasted()
                     && (me.Health <= me.MaximumHealth * 0.3
                         || me.Mana <= me.MaximumMana * 0.2)
@@ -156,6 +157,7 @@
                 }
                 if ( // SoulRing Item 
                     soul != null
+                    && soul.Item.IsValid
                     && soul.Item.CanBeCasted()
                     && Config.ItemToggler.Value.IsEnabled(soul.Item.Name)
                     && me.CanCast()
@@ -168,6 +170,7 @@
                 }
                 if ( // Arcane Boots Item
                     arcane != null
+                    && arcane.Item.IsValid
                     && arcane.Item.CanBeCasted()
                     && Config.ItemToggler.Value.IsEnabled(arcane.Item.Name)
                     && me.CanCast()
@@ -177,7 +180,6 @@
                     arcane.UseAbility();
                     await Await.Delay(GetItemDelay(e), token);
                 }
-
 
                 uint elsecount = 0;
                 elsecount += 1;
@@ -201,8 +203,8 @@
                 }
                 else elsecount += 1;
                 if (vail != null
+                    && vail.Item.IsValid
                     && vail.Item.CanBeCasted()
-
                     && Config.ItemToggler.Value.IsEnabled(vail.Item.Name)
                     && me.CanCast()
                     && !ExUnit.IsMagicImmune(e)
@@ -212,6 +214,7 @@
                     await Await.Delay(GetItemDelay(e), token);
                 }
                 if (orchid != null
+                    && orchid.Item.IsValid
                     && orchid.Item.CanBeCasted()
                     && me.CanCast()
                     && !ExUnit.IsLinkensProtected(e)
@@ -223,6 +226,7 @@
                     await Await.Delay(GetItemDelay(e), token);
                 }
                 if (bloodthorn != null
+                    && bloodthorn.Item.IsValid
                     && bloodthorn.Item.CanBeCasted()
                     && me.CanCast()
                     && !ExUnit.IsLinkensProtected(e)
@@ -235,6 +239,7 @@
                 }
                 if (elsecount == 2
                     && sheep != null
+                    && sheep.Item.IsValid
                     && sheep.Item.CanBeCasted()
                     && me.CanCast()
                     && (checkTimeModif || !buff)
@@ -292,6 +297,7 @@
                 else elsecount += 1;
                 if (elsecount == 6
                     && atos != null
+                    && atos.Item.IsValid
                     && atos.Item.CanBeCasted()
                     && me.CanCast()
                     && (checkTimeModif || !buff)
@@ -306,6 +312,7 @@
                 else elsecount += 1;
                 if (elsecount == 7
                     && dagon != null
+                    && dagon.IsValid
                     && dagon.CanBeCasted()
                     && Config.ItemToggler.Value.IsEnabled("item_dagon_5")
                     && me.CanCast()
@@ -321,7 +328,8 @@
                 }
                 else elsecount += 1;
                 if (elsecount == 8
-                    && urn != null && urn.Item.CanBeCasted() && urn.Item.CurrentCharges > 0
+                    && urn != null
+                    && urn.Item.IsValid && urn.Item.CanBeCasted() && urn.Item.CurrentCharges > 0
                     && distance <= urn.Item.GetCastRange()
                     && Config.ItemToggler.Value.IsEnabled(urn.Item.Name)
                 )
@@ -332,7 +340,8 @@
                 else elsecount += 1;
                 if (elsecount == 9
                     && bkb != null
-                    && bkb.Item.CanBeCasted()
+                    && bkb.Item.IsValid 
+                    && bkb.Item.CanBeCasted() 
                     && enemies
                     && Config.ItemToggler.Value.IsEnabled(bkb.Item.Name)
                 )
@@ -343,6 +352,7 @@
                 else elsecount += 1;
                 if (elsecount == 10
                     && lotus != null
+                    && lotus.Item.IsValid
                     && lotus.Item.CanBeCasted()
                     && enemies
                     && Config.ItemToggler.Value.IsEnabled(lotus.Item.Name)
@@ -354,6 +364,7 @@
                 else elsecount += 1;
                 if (elsecount == 11
                     && ethereal != null
+                    && ethereal.Item.IsValid
                     && ethereal.Item.CanBeCasted()
                     && me.CanCast()
                     && !ExUnit.IsLinkensProtected(e)
@@ -375,10 +386,10 @@
                     }
                 }
                 else elsecount += 1;
-
                 if (elsecount == 12
                     && Q != null
                     && Q.CanBeCasted()
+                    && (W == null || !W.CanBeCasted() || !Config.AbilityToggler.Value.IsEnabled(W.Name))
                     && !inOverload
                     && (W== null|| !W.CanBeCasted() || !Config.AbilityToggler.Value.IsEnabled(W.Name))
                     && distance <= Q.GetAbilityData("static_remnant_radius") + me.HullRadius
@@ -393,6 +404,7 @@
                 else elsecount += 1;
                 if (elsecount == 13
                     && shiva != null
+                    && shiva.Item.IsValid
                     && shiva.Item.CanBeCasted()
                     && me.CanCast()
                     && !ExUnit.IsMagicImmune(e)
@@ -406,16 +418,17 @@
                 else elsecount += 1;
                 if (elsecount == 14
                    && mjollnir != null
+                    && mjollnir.Item.IsValid
                    && mjollnir.Item.CanBeCasted()
                    && me.CanCast()
                    && !ExUnit.IsMagicImmune(e)
-                   && Config.ItemToggler.Value.IsEnabled(shiva.Item.Name)
+                   && Config.ItemToggler.Value.IsEnabled(mjollnir.Item.Name)
                    && me.Distance2D(e) <= 600
                    )
                 {
                     mjollnir.UseAbility(me);
                     await Await.Delay(GetItemDelay(e), token);
-                } // Mjollnir Item end
+                } 
 
             }
             else
@@ -423,6 +436,7 @@
                 if (Q != null
                     && Q.CanBeCasted()
                     && !inOverload
+                    && (W == null || !W.CanBeCasted() || !Config.AbilityToggler.Value.IsEnabled(W.Name))
                     && distance <= Q.GetAbilityData("static_remnant_radius") + me.HullRadius
                     && Config.AbilityToggler.Value.IsEnabled(Q.Name)
                     && me.CanCast()
@@ -434,6 +448,7 @@
                 }
 
                 if (shiva != null
+                    && shiva.Item.IsValid
                     && shiva.Item.CanBeCasted()
                     && me.CanCast()
                     && !ExUnit.IsMagicImmune(e)
@@ -466,6 +481,7 @@
                 && !inUltBall
                 && !R.IsInAbilityPhase
                 && !R.IsChanneling
+                && (W == null || !W.CanBeCasted() || !Config.AbilityToggler.Value.IsEnabled(W.Name))
                 && !ExUnit.IsChanneling(me)
                 && (Config.AutoOverload.Value
                     && buff
