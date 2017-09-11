@@ -28,6 +28,7 @@
             {
                 {"item_dagon_5", true},
                 {"item_bloodthorn", true},
+                {"item_mjollnir", true},
                 {"item_ethereal_blade", true},
                 {"item_veil_of_discord", true},
                 {"item_rod_of_atos", true},
@@ -71,7 +72,8 @@
             AutoAbilityEnabled = AutoEscapeMode.Item("Use abilities if i not have enough health.", true);
 
             AutoOverload = SpellPanel.Item("Use Overload if target disable?", false);
-            savemanamode = SpellPanel.Item("Use save mana mode.", true);
+            savemanamode = SpellPanel.Item("The extended logic of using the ultimate on the Storm position.", true);
+            savemanamode.Item.Tooltip = "Compares the rate of storm attack and the rate of use of the ability,logic chooses a more advantageous option.";
             fastVortex = SpellPanel.Item("Use instant Vortex", true);
             fastVortex.Item.Tooltip = "Ignoring the passive ability of Overload.";
             Heel = ItemPanel.Item("Min targets to BKB|Lotus", new Slider(2, 1, 5));
