@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Release</Configuration>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
@@ -13,7 +13,7 @@
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)' == 'Debug|AnyCPU' ">
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -31,7 +31,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>x64</PlatformTarget>
-    <IntermediateOutputPath>C:\Users\Vick\AppData\Local\Temp\vs97EC.tmp\Release\</IntermediateOutputPath>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject />
@@ -42,7 +41,7 @@
       <HintPath>C:\Program Files (x86)\PS\References\PlaySharp.Sentry.dll</HintPath>
     </Reference>
     <Reference Include="PlaySharp.Service">
-      <HintPath>..\..\..\..\Program Files (x86)\PS\References\PlaySharp.Service.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\PS\References\PlaySharp.Service.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Collections.Immutable, Version=1.1.36.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -60,49 +59,49 @@
   <ItemGroup>
     <!-- Ensage -->
     <Reference Include="SharpDX">
-      <HintPath>..\..\..\..\Program Files (x86)\PS\References\SharpDX.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\PS\References\SharpDX.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.DXGI">
-      <HintPath>..\..\..\..\Program Files (x86)\PS\References\SharpDX.DXGI.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\PS\References\SharpDX.DXGI.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Mathematics">
-      <HintPath>..\..\..\..\Program Files (x86)\PS\References\SharpDX.Mathematics.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\PS\References\SharpDX.Mathematics.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.XInput">
-      <HintPath>..\..\..\..\Program Files (x86)\PS\References\SharpDX.XInput.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\PS\References\SharpDX.XInput.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Direct2D1">
-      <HintPath>..\..\..\..\Program Files (x86)\PS\References\SharpDX.Direct2D1.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\PS\References\SharpDX.Direct2D1.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Direct3D9">
-      <HintPath>..\..\..\..\Program Files (x86)\PS\References\SharpDX.Direct3D9.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\PS\References\SharpDX.Direct3D9.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Direct3D11">
-      <HintPath>..\..\..\..\Program Files (x86)\PS\References\SharpDX.Direct3D11.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\PS\References\SharpDX.Direct3D11.dll</HintPath>
     </Reference>
     <Reference Include="Ensage">
-      <HintPath>..\..\..\..\Program Files (x86)\PS\References\Ensage.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\PS\References\Ensage.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <!-- PlaySharp -->
     <Reference Include="PlaySharp.Toolkit">
-      <HintPath>..\..\..\..\Program Files (x86)\PS\References\PlaySharp.Toolkit.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\PS\References\PlaySharp.Toolkit.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\..\..\Program Files (x86)\PS\References\Newtonsoft.Json.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\PS\References\Newtonsoft.Json.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <!-- SDK -->
     <Reference Include="clipper_library">
-      <HintPath>..\..\..\..\Program Files (x86)\PS\References\clipper_library.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\PS\References\clipper_library.dll</HintPath>
     </Reference>
     <Reference Include="Ensage.Common">
-      <HintPath>..\..\..\..\Program Files (x86)\PS\References\Ensage.Common.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\PS\References\Ensage.Common.dll</HintPath>
     </Reference>
     <Reference Include="Ensage.SDK">
-      <HintPath>..\..\..\..\Program Files (x86)\PS\References\Ensage.SDK.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\PS\References\Ensage.SDK.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
