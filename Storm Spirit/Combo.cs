@@ -120,7 +120,7 @@
                 "modifier_storm_spirit_electric_vortex_pull",
                 "modifier_sheepstick_debuff",
                 "modifier_rod_of_atos_debuff"
-            }, false) || ExUnit.IsStunned(e) || e.IsHexed() || ExUnit.IsRooted(e);
+            }, false) || ExUnit.IsStunned(e) || ExUnit.IsHexed(e) || ExUnit.IsRooted(e);
             var checkTimeModif = debuff?.RemainingTime <= 0.2;
 
             var inUltBall = ExUnit.HasModifier(me, "modifier_storm_spirit_ball_lightning") ||
