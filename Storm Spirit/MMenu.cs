@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-
-namespace StormSpirit
+﻿namespace StormSpirit
 {
     using System;
     using System.Collections.Generic;
@@ -16,10 +14,9 @@ namespace StormSpirit
         {
             Game.PrintMessage("<font color='#00ff00'>" + text + "</font>");
         }
-        
         public ConfigInit()
         {
-            Menu = MenuFactory.CreateWithTexture("StormSpirit by Vick", "item_orchid");
+            Menu = MenuFactory.Create("StormSpirit by Vick", "item_orchid");
             SpellPanel = Menu.Menu("Spells");
             ItemPanel = Menu.Menu("Items");
             AutoEscapeMode = Menu.Menu("Auto Escape Mode");
@@ -27,7 +24,6 @@ namespace StormSpirit
             DrawingDamagePanel = Menu.Menu("Drawing Damage Panel");
             DrawingRangeDisplay = Menu.Menu("Drawing Range Display");
             AntiLinkensSphere = Menu.Menu("Auto Anti Linkens Sphere");
-            
             var items = new Dictionary<string, bool>
             {
                 {"item_dagon_5", true},
@@ -43,7 +39,6 @@ namespace StormSpirit
                 {"item_urn_of_shadows", true},
                 {"item_soul_ring", true},
                 {"item_cheese", true},
-                {"item_nullifier", true},
                 {"item_black_king_bar", true}
             };
             var link = new Dictionary<string, bool>
@@ -69,25 +64,6 @@ namespace StormSpirit
                 {"storm_spirit_ball_lightning", true}
             };
             DrawingDamageEnabled = DrawingDamagePanel.Item("Show drawing damage to kill", true);
-
-            DrawingDamageSize = DrawingDamagePanel.Item("Fount Size", new Slider(16, 5, 25));
-            WeatherItem = DrawingDamagePanel.Item("Selected font", new StringList(new[]
-            {
-                "Arial",
-                "Arial Black",
-                "Cambria",
-                "Comic Sans Ms",
-                "Consolas",
-                "Cursive",
-                "Franklin Gothic",
-                "Gabriola",
-                "Impact",
-                "Monotype Corsiva",
-                "Segoe print",
-                "Mv boli",
-                "Century gothic",
-                "Fantasy"
-            }));
             DrawingTargetEnabled = DrawingTargetMaker.Item("Show target", true);
 
             DrawingRangeEnabled = DrawingRangeDisplay.Item("Show Spell Range", true);
@@ -110,7 +86,7 @@ namespace StormSpirit
             Key = Menu.Item("Combo Key", new KeyBind(68));
             Success("Zip! Zap! Ha ha ha ha! Whoa-ho-ho! Ooh, who's that handsome devil?");
         }
-        public MenuItem<StringList> WeatherItem { get; }
+
         public MenuFactory Menu { get; set; }
         public MenuFactory SpellPanel { get; set; }
         public MenuFactory ItemPanel { get; set; }
@@ -137,7 +113,6 @@ namespace StormSpirit
         
         public MenuItem<AbilityToggler> AbilityToggler { get; }
 
-        public MenuItem<Slider> DrawingDamageSize { get; }
         public MenuItem<Slider> Heel { get; }
 
         public MenuItem<KeyBind> Key { get; }

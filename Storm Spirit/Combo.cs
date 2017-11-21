@@ -61,9 +61,7 @@
         private IInventoryManager Inventory { get; }
 
         [ItemBinding]
-        
-        public item_nullifier nullifier { get; private set; }
-        [ItemBinding]
+
         public item_ethereal_blade ethereal { get; private set; }
         [ItemBinding]
         public item_mjollnir mjollnir { get; private set; }
@@ -227,19 +225,6 @@
                     orchid.UseAbility(e);
                     await Await.Delay(GetItemDelay(e), token);
                 }
-                if (nullifier != null
-                    && nullifier.Item.IsValid
-                    && nullifier.Item.CanBeCasted()
-                    && me.CanCast()
-                    && !ExUnit.IsLinkensProtected(e)
-                    && !ExUnit.IsMagicImmune(e)
-                    && Config.ItemToggler.Value.IsEnabled(nullifier.Item.Name)
-                )
-                {
-                    nullifier.UseAbility(e);
-                    await Await.Delay(GetItemDelay(e), token);
-                }
-                
                 if (bloodthorn != null
                     && bloodthorn.Item.IsValid
                     && bloodthorn.Item.CanBeCasted()
