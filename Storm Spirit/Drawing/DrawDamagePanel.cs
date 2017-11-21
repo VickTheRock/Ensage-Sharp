@@ -8,7 +8,7 @@
     using SharpDX;
     using Ensage.SDK.Extensions;
     using ExUnit = Ensage.SDK.Extensions.UnitExtensions;
-
+    using Ensage.Common.Menu;
     partial class Combo
     {
         public static bool OnScreen(Vector3 v)
@@ -21,8 +21,7 @@
             var enemies = ObjectManager.GetEntities<Hero>()
                 .Where(x => x.IsVisible && x.IsAlive && x.Team != me.Team && !ExUnit.IsMagicImmune(x) && !x.IsIllusion).ToList();
             if (!Game.IsInGame || Game.IsPaused || Game.IsWatchingGame || enemies.Count == 0 || !Config.DrawingDamageEnabled.Value) return;
-
-
+            
             foreach (var v in enemies)
             {
                 damage[v.Handle] = (float)CalculateDamage(v);
@@ -46,46 +45,49 @@
                     : "✘ Damage:" + (int)Math.Floor(damage[v.Handle]) + "(" + (int)calcEnemyHealth + ")";
                 var text2 = me.Mana >= useMana ? "✔ Mana:" + (int)Math.Floor(useMana) + "(" + (int)calcMyMana + ")" : "✘ Mana:" + (int)Math.Floor(useMana) + "(" + (int)calcMyMana + ")";
                 var text3 = me.Mana >= rManacost ? "✔ Distance:" + (int)me.Distance2D(v) : "✘ Distance:" + (int)me.Distance2D(v);
-                var size = new Vector2(16, 16);
+                var size = new Vector2(Config.DrawingDamageSize.Item.GetValue<Slider>().Value, Config.DrawingDamageSize.Item.GetValue<Slider>().Value);
                 var position1 = new Vector2(screenPos.X + 65, screenPos.Y + 12);
                 var position2 = new Vector2(screenPos.X + 65, screenPos.Y + 24);
                 var position3 = new Vector2(screenPos.X + 65, screenPos.Y + 36);
+                var fountCount = Config.WeatherItem.Value.SelectedIndex;
 
+                var fountName = Config.WeatherItem.Value.SList;
+                
                 if (Drawing.Direct3DDevice9 == null) return;
                 Drawing.DrawText(
-                    text1,
+                    text1, fountName[fountCount],// "Segoe script",//"Comic Sans Ms",
                     new Vector2(screenPos.X + 64, screenPos.Y + 13),
                     size,
                     Color.Black,
-                    FontFlags.DropShadow);
+                    FontFlags.GaussianBlur);
                 Drawing.DrawText(
-                    text1,
+                    text1, fountName[fountCount],// "Segoe script",//"Comic Sans Ms",
                     position1,
                     size,
                     v.Health <= damage[v.Handle] ? Color.LawnGreen : Color.OrangeRed,
                     FontFlags.GaussianBlur);
 
                 Drawing.DrawText(
-                    text2,
+                    text2, fountName[fountCount],// "Segoe script",//"Comic Sans Ms",
                     new Vector2(screenPos.X + 64, screenPos.Y + 25),
                     size,
                     Color.Black,
-                    FontFlags.DropShadow);
+                    FontFlags.GaussianBlur);
                 Drawing.DrawText(
-                    text2,
+                    text2, fountName[fountCount],// "Segoe script",//"Comic Sans Ms",
                     position2,
                     size,
                     me.Mana >= useMana ? Color.LawnGreen : Color.OrangeRed,
                     FontFlags.GaussianBlur);
 
                 Drawing.DrawText(
-                    text3,
+                    text3, fountName[fountCount],// "Segoe script",//"Comic Sans Ms",
                     new Vector2(screenPos.X + 64, screenPos.Y + 37),
                     size,
                     Color.Black,
-                    FontFlags.DropShadow);
+                    FontFlags.GaussianBlur);
                 Drawing.DrawText(
-                    text3,
+                    text3, fountName[fountCount],// "Segoe script",//"Comic Sans Ms",
                     position3,
                     size,
                     me.Mana >= rManacost ? Color.LawnGreen : Color.OrangeRed,

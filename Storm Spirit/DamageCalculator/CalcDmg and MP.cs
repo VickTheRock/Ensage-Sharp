@@ -19,14 +19,13 @@
         public double CalculateDamage(Hero victim)
         {
             double dmgResult = 0;
-            try
-            {
+           
                 bool vailOn = false;
                 bool orchidOn = false;
                 double manacost = 0;
                 var rLevel = R.Level;
                 var distance = me.Distance2D(victim);
-
+                var dagon = me.Inventory.Items.FirstOrDefault(item => item.Name.Contains("item_dagon"));
                 var travelSpeed = R.GetAbilityData("ball_lightning_move_speed", rLevel);
                 var travelTime = distance / travelSpeed;
                 var startManaCost = R.GetAbilityData("ball_lightning_initial_mana_base") +
@@ -93,8 +92,8 @@
                         orchidOn = true;
                     }
                     else goto gotoDamage;
-                }
-                if (bloodthorn != null
+            }
+            if (bloodthorn != null
                     && bloodthorn.Item.IsValid && bloodthorn.Item.CanBeCasted() && Config.ItemToggler.Value.IsEnabled("item_bloodthorn")
                     && !ExUnit.HasModifier(victim, "modifier_bloodthorn_debuff")
                     && !ExUnit.HasModifier(victim, "modifier_orchid_malevolence_debuff"))
@@ -105,8 +104,8 @@
                         orchidOn = true;
                     }
                     else goto gotoDamage;
-                }
-                if (vail != null
+            }
+            if (vail != null
                     && vail.Item.IsValid && vail.Item.CanBeCasted()
                     && Config.ItemToggler.Value.IsEnabled(vail.Item.Name)
                     && !ExUnit.HasModifier(victim, "modifier_item_veil_of_discord_debuff"))
@@ -129,11 +128,11 @@
                             dmgResult += eDmg * (1 - victim.MagicDamageResist);
                     }
                     else goto gotoDamage;
-                }
+            }
 
-                if (wReady && eReady)
+            if (wReady && eReady)
                 {
-                    if (manacost + W.ManaCost < me.Mana && !Config.fastVortex.Value)
+                    if (manacost + W.ManaCost < me.Mana)
                     {
                         dmgResult += eDmg * (1 - victim.MagicDamageResist);
                     }
@@ -141,11 +140,9 @@
                 }
                 var spellamplymult = 1 + me.TotalIntelligence / 16 / 100;
                 dmgResult = dmgResult * spellamplymult;
-                var dagon = me.GetDagon();
-                if (dagon != null
-                    && dagon.IsValid && dagon.CanBeCasted() && victim.Handle == e?.Handle && Config.ItemToggler.Value.IsEnabled("item_dagon_5"))
-                {
-                    if (manacost + dagon.ManaCost < me.Mana)
+            if (dagon != null && dagon.CanBeCasted() && victim.Handle == e?.Handle && Config.ItemToggler.Value.IsEnabled("item_dagon_5"))
+            {
+                if (manacost + dagon.ManaCost < me.Mana)
                     {
                         manacost += dagon.ManaCost;
                         dmgResult += dagonDmg[dagon.Level] * (1 - victim.MagicDamageResist);
@@ -154,8 +151,8 @@
                 }
                 if (shiva != null
                     && shiva.Item.IsValid && shiva.Item.CanBeCasted() && Config.ItemToggler.Value.IsEnabled(shiva.Item.Name))
-                {
-                    if (manacost + shiva.Item.ManaCost < me.Mana)
+            {
+                if (manacost + shiva.Item.ManaCost < me.Mana)
                     {
                         manacost += shiva.Item.ManaCost;
                         dmgResult += 200 * (1 - victim.MagicDamageResist);
@@ -163,15 +160,14 @@
                     else goto gotoDamage;
                 }
 
-                int etherealdamage = (int)(me.TotalIntelligence * 2 + 75);
-
+                int etherealdamage = (int)((me.TotalIntelligence * 2) + 75);
                 if (ethereal != null
-                    && ethereal.Item.IsValid && ethereal.Item.CanBeCasted() && victim.Handle == e?.Handle)
-                {
-                    if (manacost + ethereal.Item.ManaCost < me.Mana)
+                    && ethereal.Item.IsValid && ethereal.Item.CanBeCasted() && victim.Handle == e?.Handle && Config.ItemToggler.Value.IsEnabled(ethereal.Item.Name))
+            {
+                if (manacost + ethereal.Item.ManaCost < me.Mana)
                     {
                         manacost += ethereal.Item.ManaCost;
-                        dmgResult *= 1.4 + etherealdamage;
+                        dmgResult += 1.4 + etherealdamage;
                     }
                     //else goto gotoDamage;
                 }
@@ -285,10 +281,6 @@
                 }
                 if (victim.NetworkName == "CDOTA_Unit_Hero_SkeletonKing" && victim.Spellbook.SpellR.Cooldown <= 0 && victim.Mana > 140)
                     dmgResult = 0;
-            }
-            catch (Exception)
-            {
-            }
 
             return dmgResult;
         } // GetDamageTaken::END
