@@ -55,39 +55,39 @@
                 
                 if (Drawing.Direct3DDevice9 == null) return;
                 Drawing.DrawText(
-                    text1, fountName[fountCount],// "Segoe script",//"Comic Sans Ms",
+                    text1, fountName[fountCount],
                     new Vector2(screenPos.X + 64, screenPos.Y + 13),
                     size,
                     Color.Black,
                     FontFlags.GaussianBlur);
                 Drawing.DrawText(
-                    text1, fountName[fountCount],// "Segoe script",//"Comic Sans Ms",
+                    text1, fountName[fountCount],
                     position1,
                     size,
                     v.Health <= damage[v.Handle] ? Color.LawnGreen : Color.OrangeRed,
                     FontFlags.GaussianBlur);
 
                 Drawing.DrawText(
-                    text2, fountName[fountCount],// "Segoe script",//"Comic Sans Ms",
+                    text2, fountName[fountCount],
                     new Vector2(screenPos.X + 64, screenPos.Y + 25),
                     size,
                     Color.Black,
                     FontFlags.GaussianBlur);
-                Drawing.DrawText(
-                    text2, fountName[fountCount],// "Segoe script",//"Comic Sans Ms",
+                Drawing.DrawText( 
+                    text2, fountName[fountCount],
                     position2,
                     size,
                     me.Mana >= useMana ? Color.LawnGreen : Color.OrangeRed,
                     FontFlags.GaussianBlur);
 
                 Drawing.DrawText(
-                    text3, fountName[fountCount],// "Segoe script",//"Comic Sans Ms",
+                    text3, fountName[fountCount],
                     new Vector2(screenPos.X + 64, screenPos.Y + 37),
                     size,
                     Color.Black,
                     FontFlags.GaussianBlur);
                 Drawing.DrawText(
-                    text3, fountName[fountCount],// "Segoe script",//"Comic Sans Ms",
+                    text3, fountName[fountCount],
                     position3,
                     size,
                     me.Mana >= rManacost ? Color.LawnGreen : Color.OrangeRed,
