@@ -68,6 +68,7 @@ namespace StormSpirit
                 {"item_travel_boots_2", true},
                 {"storm_spirit_ball_lightning", true}
             };
+            
             DrawingDamageEnabled = DrawingDamagePanel.Item("Show drawing damage to kill", true);
 
             DrawingDamageSize = DrawingDamagePanel.Item("Fount Size", new Slider(16, 5, 25));
@@ -98,8 +99,17 @@ namespace StormSpirit
             AutoOverload = SpellPanel.Item("Use Overload if target disable?", false);
             savemanamode = SpellPanel.Item("The extended logic of using the ultimate on the Storm position.", true);
             savemanamode.Item.Tooltip = "Compares the rate of storm attack and the rate of use of the ability,logic chooses a more advantageous option.";
-            fastVortex = SpellPanel.Item("Use instant Vortex", true);
+            fastVortex = SpellPanel.Item("Use instant Vortex", false);
             fastVortex.Item.Tooltip = "Ignoring the passive ability of Overload.";
+
+
+
+
+            hexToSilence = SpellPanel.Item("Use Hex if enemy in silence", true);
+            silenceToHex = SpellPanel.Item("Use silence if enemy in Hex", false);
+            vortexToSilence = SpellPanel.Item("Use Vortex if enemy in silence", true);
+            silenceToVortex = SpellPanel.Item("Use silence if enemy in Vortex", true);
+
             Heel = ItemPanel.Item("Min targets to BKB|Lotus", new Slider(2, 1, 5));
             
             AbilityToggler = SpellPanel.Item("Spells", new AbilityToggler(skills));
@@ -121,8 +131,7 @@ namespace StormSpirit
         public MenuFactory AntiLinkensSphere { get; set; }
 
         public MenuItem<bool> DrawingDamageEnabled { get; }
-
-        public MenuItem<bool> RangeBlink { get; }
+        
         public MenuItem<bool> RangeElectricVortex { get; }
         public MenuItem<bool> RangeStaticRemnant { get; }
         
@@ -131,6 +140,10 @@ namespace StormSpirit
         public MenuItem<bool> debuff { get; }
         public MenuItem<bool> AutoOverload { get; }
         public MenuItem<bool> fastVortex { get; }
+        public MenuItem<bool> silenceToHex { get; }
+        public MenuItem<bool> hexToSilence { get; }
+        public MenuItem<bool> vortexToSilence { get; }
+        public MenuItem<bool> silenceToVortex { get; }
         public MenuItem<bool> savemanamode { get; }
         public MenuItem<bool> AutoAbilityEnabled { get; }
         public MenuItem<Slider> RHealh { get; }
